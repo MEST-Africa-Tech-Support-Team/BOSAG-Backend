@@ -2,11 +2,11 @@ import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import OnboardingForm from "../Models/membership_mod.js";
-import User from "../Models/user_mod.js";
+import {User} from "../Models/user_mod.js";
 import { sendEmail, templates } from "../Configs/email.js";
 
 // ==============================
-// 1️⃣ CLOUDINARY CONFIG
+// CLOUDINARY CONFIG
 // ==============================
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -15,7 +15,7 @@ cloudinary.config({
 });
 
 // ==============================
-// 2️⃣ MULTER STORAGE CONFIG
+// MULTER STORAGE CONFIG
 // ==============================
 const storage = new CloudinaryStorage({
   cloudinary,
@@ -28,7 +28,7 @@ const storage = new CloudinaryStorage({
 export const upload = multer({ storage });
 
 // ==============================
-// 3️⃣ SUBMIT ONBOARDING FORM
+// SUBMIT ONBOARDING FORM
 // ==============================
 export const submitOnboardingForm = async (req, res) => {
   try {
@@ -57,7 +57,7 @@ export const submitOnboardingForm = async (req, res) => {
 
     await newForm.save();
 
-    // ✅ Send confirmation email to the user
+    // Send confirmation email to the user
     const user = await User.findById(req.user._id);
     if (user) {
       await sendEmail(
@@ -78,7 +78,7 @@ export const submitOnboardingForm = async (req, res) => {
 };
 
 // ==============================
-// 4️⃣ GET USER’S ONBOARDING FORM
+// GET USER’S ONBOARDING FORM
 // ==============================
 export const getMyOnboardingForm = async (req, res) => {
   try {
@@ -94,7 +94,7 @@ export const getMyOnboardingForm = async (req, res) => {
 };
 
 // ==============================
-// 5️⃣ ADMIN: GET ALL SUBMISSIONS
+// ADMIN: GET ALL SUBMISSIONS
 // ==============================
 export const getAllOnboardingForms = async (req, res) => {
   try {
@@ -107,7 +107,7 @@ export const getAllOnboardingForms = async (req, res) => {
 };
 
 // ==============================
-// 6️⃣ ADMIN: UPDATE STATUS (Approve/Reject)
+// ADMIN: UPDATE STATUS (Approve/Reject)
 // ==============================
 export const updateOnboardingStatus = async (req, res) => {
   try {
@@ -123,7 +123,7 @@ export const updateOnboardingStatus = async (req, res) => {
 
     await form.save();
 
-    // ✅ Notify the user of the status update
+    // Notify the user of the status update
     const user = await User.findById(form.user);
     if (user) {
       await sendEmail(

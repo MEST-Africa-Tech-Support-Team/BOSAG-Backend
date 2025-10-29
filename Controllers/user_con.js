@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import User from "../Models/user_mod.js";
+import {User} from "../Models/user_mod.js";
 import { sendEmail, templates } from "../Configs/email.js";
 import Joi from "joi";
 import passport from "passport";
