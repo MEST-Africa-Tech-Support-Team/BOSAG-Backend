@@ -1,7 +1,7 @@
-import express from "express";
+
 import passport from "passport";
 import {
-  registerUser,
+  
   verifyEmail,
   loginUser,
   forgotPassword,
@@ -11,21 +11,19 @@ import {
   updateProfile,
   googleAuth,
   googleCallback,
+  registerUser,
 } from "../Controllers/user_con.js";
 import { protect, adminOnly } from "../Middleware/auth_mid.js";
+import { Router } from "express";
 
-const userRoutes = express.Router();
+const userRoutes = Router()
 
 // ======================
 // USER AUTH ROUTES
 // ======================
 
 // Register new user (public)
-userRoutes.post("/register", (req, res, next) => {
-  console.log("Register route hit");
-  next();
-}, registerUser);
-
+userRoutes.post("/register", registerUser);
 
 // Verify email via link (public)
 userRoutes.get("/verify-email/:token", verifyEmail);
