@@ -4,6 +4,7 @@ import {
   getMyOnboardingForm,
   getAllOnboardingForms,
   updateOnboardingStatus,
+  updateMyOnboardingForm,
   upload, // multer-cloudinary middleware
 } from "../Controllers/membership_con.js";
 
@@ -28,6 +29,15 @@ onboardingRoutes.post(
   ]),
   submitOnboardingForm
 );
+
+onboardingRoutes.put("/onboarding/update", protect, upload.fields([
+  { name: "registrationCertificate", maxCount: 1 },
+  { name: "companyProfile", maxCount: 1 },
+  { name: "logo", maxCount: 1 },
+  { name: "brochure", maxCount: 1 },
+  { name: "signatureImage", maxCount: 1 },
+]), updateMyOnboardingForm);
+
 
 /**
  * @route GET /api/onboarding/me

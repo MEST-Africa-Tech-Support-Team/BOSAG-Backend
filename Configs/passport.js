@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import {User} from "../Models/user_mod.js";
+import User from "../Models/user_mod.js";
 
 passport.use(
   new GoogleStrategy(

@@ -24,4 +24,5 @@ const userSchema = new mongoose.Schema({
 // Remove this line completely
 // userSchema.index({ uid: 1 }, { unique: true, sparse: true });
 
-export const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
+export default User;

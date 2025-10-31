@@ -2,7 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import OnboardingForm from "../Models/membership_mod.js";
-import {User} from "../Models/user_mod.js";
+import User from "../Models/user_mod.js";
 import { sendEmail, templates } from "../Configs/email.js";
 
 // ==============================
@@ -107,7 +107,7 @@ export const getAllOnboardingForms = async (req, res) => {
 };
 
 // ==============================
-// ADMIN: UPDATE STATUS (Approve/Reject)
+// : UPDATE STATUS (Approve/Reject)
 // ==============================
 export const updateOnboardingStatus = async (req, res) => {
   try {
@@ -141,5 +141,57 @@ export const updateOnboardingStatus = async (req, res) => {
   } catch (err) {
     console.error("❌ Update Status Error:", err);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ==============================
+// USER: UPDATE OWN ONBOARDING FORM
+// ==============================
+export const updateMyOnboardingForm = async (req, res) => {
+  try {
+    const form = await OnboardingForm.findOne({ user: req.user._id });
+    if (!form)
+      return res.status(404).json({ message: "No onboarding form found for this user" });
+
+    // Extract possible uploaded files
+    const fileFields = [
+      "registrationCertificate",
+      "companyProfile",
+      "logo",
+      "brochure",
+      "signatureImage",
+    ];
+
+    const uploadedFiles = {};
+    fileFields.forEach((field) => {
+      if (req.files && req.files[field]) {
+        uploadedFiles[field] = req.files[field][0].path; // Cloudinary URL
+      }
+    });
+
+    // Update form fields — only overwrite what’s provided
+    Object.assign(form, req.body, uploadedFiles);
+
+    await form.save();
+
+    // ✅ Notify user of successful update
+    const user = await User.findById(req.user._id);
+    if (user) {
+      await sendEmail(
+        user.email,
+        "BOSAG Onboarding Form Updated",
+        templates.onboardingUpdateConfirmation
+          ? templates.onboardingUpdateConfirmation(user.firstName || "Member")
+          : `<p>Your onboarding form has been successfully updated.</p>`
+      );
+    }
+
+    res.json({
+      message: "✅ Onboarding form updated successfully.",
+      form,
+    });
+  } catch (err) {
+    console.error("❌ Update Form Error:", err);
+    res.status(500).json({ message: "Server error. Could not update form." });
   }
 };

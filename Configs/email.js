@@ -1,18 +1,14 @@
 import sgMail from "@sendgrid/mail";
 
-// ================================
-// 1️⃣ Configure SendGrid
-// ================================
+// Configure SendGrid
 if (!process.env.SENDGRID_API_KEY) {
-  console.error("❌ Missing SENDGRID_API_KEY in environment variables");
+  console.error("Missing SENDGRID_API_KEY in environment variables");
 } else {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  console.log("📨 SendGrid API Key: ✅ Loaded");
+  console.log("SendGrid API Key: Loaded");
 }
 
-// ================================
-// 2️⃣ Email Templates
-// ================================
+// Email Templates
 const templates = {
   verifyEmail: (link) => `
     <div style="font-family: Arial, sans-serif; color: #333;">
@@ -52,11 +48,46 @@ const templates = {
       <p style="font-size: 12px; color: #888;">BOSAG Team © ${new Date().getFullYear()}</p>
     </div>
   `,
+
+  // Add these two templates 
+  onboardingConfirmation: (name) => `
+    <div style="font-family: Arial, sans-serif; color: #333;">
+      <h2 style="color: #0b58bc;">Hello ${name},</h2>
+      <p>Thank you for submitting your onboarding form to <strong>BOSAG</strong>.</p>
+      <p>We have received your application and our team will review it shortly.</p>
+      <p>You’ll receive another email once your membership status is updated.</p>
+      <hr />
+      <p style="font-size: 12px; color: #888;">BOSAG Team © ${new Date().getFullYear()}</p>
+    </div>
+  `,
+
+  onboardingStatusUpdate: (name, status, remarks) => `
+    <div style="font-family: Arial, sans-serif; color: #333;">
+      <h2 style="color: #0b58bc;">Hello ${name},</h2>
+      <p>Your membership application status has been updated to:</p>
+      <h3 style="color: ${status === "Approved" ? "green" : status === "Rejected" ? "red" : "#555"};">
+        ${status}
+      </h3>
+      ${remarks ? `<p><strong>Remarks:</strong> ${remarks}</p>` : ""}
+      <p>Thank you for being part of BOSAG.</p>
+      <hr />
+      <p style="font-size: 12px; color: #888;">BOSAG Team © ${new Date().getFullYear()}</p>
+    </div>
+  `,
+
+  onboardingUpdateConfirmation: (name) => `
+  <div style="font-family: Arial, sans-serif; color: #333;">
+    <h2 style="color: #0b58bc;">Onboarding Form Updated</h2>
+    <p>Hi ${name}, your onboarding form has been successfully updated.</p>
+    <hr />
+    <p style="font-size: 12px; color: #888;">BOSAG Team © ${new Date().getFullYear()}</p>
+  </div>
+`,
+
 };
 
-// ================================
-// 3️⃣ Send Email Function
-// ================================
+
+// Send Email Function
 export const sendEmail = async (to, subject, htmlContent) => {
   try {
     if (!process.env.SENDGRID_FROM_EMAIL) {
@@ -66,7 +97,7 @@ export const sendEmail = async (to, subject, htmlContent) => {
     const msg = {
       to,
       from: {
-        email: process.env.SENDGRID_FROM_EMAIL, // ✅ verified sender
+        email: process.env.SENDGRID_FROM_EMAIL,
         name: "BOSAG Support",
       },
       subject,
@@ -74,17 +105,16 @@ export const sendEmail = async (to, subject, htmlContent) => {
     };
 
     await sgMail.send(msg);
-    console.log(`✅ Email sent successfully to ${to}`);
+    console.log(`Email sent successfully to ${to}`);
   } catch (error) {
-    console.error("❌ Email sending failed:", error.message);
+    console.error("Email sending failed:", error.message);
     if (error.response?.body) {
-      console.error("📩 SendGrid Response:", JSON.stringify(error.response.body, null, 2));
+      console.error("SendGrid Response:", JSON.stringify(error.response.body, null, 2));
     }
     throw new Error("Email delivery failed");
   }
 };
 
-// ================================
-// 4️⃣ Export Templates
-// ================================
+// Export Templates
+
 export { templates };
