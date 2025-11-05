@@ -5,18 +5,15 @@ import OnboardingForm from "../Models/membership_mod.js";
 import User from "../Models/user_mod.js";
 import { sendEmail, templates } from "../Configs/email.js";
 
-// ==============================
 // CLOUDINARY CONFIG
-// ==============================
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// ==============================
 // MULTER STORAGE CONFIG
-// ==============================
+
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
@@ -27,28 +24,19 @@ const storage = new CloudinaryStorage({
 
 export const upload = multer({ storage });
 
-// ==============================
 // SUBMIT ONBOARDING FORM
-// ==============================
+
 export const submitOnboardingForm = async (req, res) => {
   try {
-    // Extract uploaded files from Cloudinary
-    const fileFields = [
-      "registrationCertificate",
-      "companyProfile",
-      "logo",
-      "brochure",
-      "signatureImage",
-    ];
-
+    const fileFields = ["registrationCertificate", "companyProfile", "logo", "brochure"];
     const uploadedFiles = {};
+
     fileFields.forEach((field) => {
       if (req.files && req.files[field]) {
         uploadedFiles[field] = req.files[field][0].path; // Cloudinary URL
       }
     });
 
-    // Create new onboarding form
     const newForm = new OnboardingForm({
       user: req.user._id,
       ...req.body,
@@ -57,13 +45,16 @@ export const submitOnboardingForm = async (req, res) => {
 
     await newForm.save();
 
-    // Send confirmation email to the user
+    // Send confirmation email
     const user = await User.findById(req.user._id);
     if (user) {
+      const name = user.firstName || user.name || "Member";
       await sendEmail(
         user.email,
         "BOSAG Onboarding Form Received",
-        templates.onboardingConfirmation(user.firstName || "Member")
+        templates?.onboardingConfirmation
+          ? templates.onboardingConfirmation(name)
+          : `<p>Hello ${name}, your onboarding form has been received. Thank you!</p>`
       );
     }
 
@@ -78,13 +69,12 @@ export const submitOnboardingForm = async (req, res) => {
 };
 
 // ==============================
-// GET USER’S ONBOARDING FORM
+// 👤 GET USER’S OWN FORM
 // ==============================
 export const getMyOnboardingForm = async (req, res) => {
   try {
     const form = await OnboardingForm.findOne({ user: req.user._id });
-    if (!form)
-      return res.status(404).json({ message: "Form not found for this user" });
+    if (!form) return res.status(404).json({ message: "Form not found for this user" });
 
     res.json({ form });
   } catch (err) {
@@ -93,12 +83,11 @@ export const getMyOnboardingForm = async (req, res) => {
   }
 };
 
-// ==============================
-// ADMIN: GET ALL SUBMISSIONS
-// ==============================
+// ADMIN: GET ALL FORMS
 export const getAllOnboardingForms = async (req, res) => {
   try {
-    const forms = await OnboardingForm.find().populate("user", "firstName lastName email");
+    const forms = await OnboardingForm.find()
+      .populate("user", "firstName lastName email");
     res.json(forms);
   } catch (err) {
     console.error("❌ Admin Get Forms Error:", err);
@@ -106,34 +95,28 @@ export const getAllOnboardingForms = async (req, res) => {
   }
 };
 
-// ==============================
-// : UPDATE STATUS (Approve/Reject)
-// ==============================
+// ADMIN: UPDATE STATUS (Approve/Reject)
 export const updateOnboardingStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status, remarks } = req.body;
 
     const form = await OnboardingForm.findById(id);
-    if (!form)
-      return res.status(404).json({ message: "Form not found" });
+    if (!form) return res.status(404).json({ message: "Form not found" });
 
     form.status = status || form.status;
     form.remarks = remarks || form.remarks;
-
     await form.save();
 
-    // Notify the user of the status update
     const user = await User.findById(form.user);
     if (user) {
+      const name = user.firstName || "Member";
       await sendEmail(
         user.email,
         "BOSAG Membership Application Status Update",
-        templates.onboardingStatusUpdate(
-          user.firstName || "Member",
-          form.status,
-          form.remarks
-        )
+        templates?.onboardingStatusUpdate
+          ? templates.onboardingStatusUpdate(name, form.status, form.remarks)
+          : `<p>Hello ${name}, your application has been <strong>${form.status}</strong>.<br/>Remarks: ${form.remarks || "None"}</p>`
       );
     }
 
@@ -144,45 +127,35 @@ export const updateOnboardingStatus = async (req, res) => {
   }
 };
 
-// ==============================
-// USER: UPDATE OWN ONBOARDING FORM
-// ==============================
+// USER: UPDATE OWN FORM
+
 export const updateMyOnboardingForm = async (req, res) => {
   try {
     const form = await OnboardingForm.findOne({ user: req.user._id });
     if (!form)
       return res.status(404).json({ message: "No onboarding form found for this user" });
 
-    // Extract possible uploaded files
-    const fileFields = [
-      "registrationCertificate",
-      "companyProfile",
-      "logo",
-      "brochure",
-      "signatureImage",
-    ];
-
+    const fileFields = ["registrationCertificate", "companyProfile", "logo", "brochure"];
     const uploadedFiles = {};
+
     fileFields.forEach((field) => {
       if (req.files && req.files[field]) {
-        uploadedFiles[field] = req.files[field][0].path; // Cloudinary URL
+        uploadedFiles[field] = req.files[field][0].path;
       }
     });
 
-    // Update form fields — only overwrite what’s provided
     Object.assign(form, req.body, uploadedFiles);
-
     await form.save();
 
-    // ✅ Notify user of successful update
     const user = await User.findById(req.user._id);
     if (user) {
+      const name = user.firstName || "Member";
       await sendEmail(
         user.email,
         "BOSAG Onboarding Form Updated",
-        templates.onboardingUpdateConfirmation
-          ? templates.onboardingUpdateConfirmation(user.firstName || "Member")
-          : `<p>Your onboarding form has been successfully updated.</p>`
+        templates?.onboardingUpdateConfirmation
+          ? templates.onboardingUpdateConfirmation(name)
+          : `<p>Hello ${name}, your onboarding form has been updated successfully.</p>`
       );
     }
 
