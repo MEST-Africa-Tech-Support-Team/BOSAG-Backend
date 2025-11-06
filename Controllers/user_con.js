@@ -6,9 +6,7 @@ import { sendEmail, templates } from "../Configs/email.js";
 import Joi from "joi";
 import passport from "passport";
 
-// ======================
 // JOI VALIDATION
-// ======================
 const registerSchema = Joi.object({
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
@@ -22,9 +20,7 @@ const loginSchema = Joi.object({
   password: Joi.string().required(),
 });
 
-// ======================
 // HELPER FUNCTIONS
-// ======================
 const createToken = (user) => {
   return jwt.sign(
     { id: user._id, email: user.email, role: user.role },
@@ -33,9 +29,7 @@ const createToken = (user) => {
   );
 };
 
-// ======================
 // REGISTER USER
-// ======================
 export const registerUser = async (req, res) => {
   try {
     const { error } = registerSchema.validate(req.body);
@@ -74,9 +68,7 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// ======================
 // VERIFY EMAIL
-// ======================
 export const verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;
@@ -118,9 +110,7 @@ export const verifyEmail = async (req, res) => {
   }
 };
 
-// ======================
 // LOGIN USER
-// ======================
 export const loginUser = async (req, res) => {
   try {
     const { error } = loginSchema.validate(req.body);
@@ -144,9 +134,7 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// ======================
 // GOOGLE LOGIN (Passport)
-// ======================
 export const googleAuth = passport.authenticate("google", { scope: ["profile", "email"] });
 
 export const googleCallback = (req, res) => {
@@ -154,9 +142,7 @@ export const googleCallback = (req, res) => {
   res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${token}`);
 };
 
-// ======================
 // SOCIAL LOGIN (manual fallback)
-// ======================
 export const socialLogin = async (req, res) => {
   try {
     const { email, provider, firstName, lastName } = req.body;
@@ -182,9 +168,7 @@ export const socialLogin = async (req, res) => {
   }
 };
 
-// ======================
 // FORGOT PASSWORD
-// ======================
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -206,9 +190,7 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
-// ======================
 // RESET PASSWORD
-// ======================
 export const resetPassword = async (req, res) => {
   try {
     const { token } = req.params;
@@ -232,9 +214,7 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-// ======================
 // UPDATE PROFILE
-// ======================
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -264,9 +244,7 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-// ======================
 // CREATE ADMIN (Superadmin only)
-// ======================
 export const createAdmin = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;

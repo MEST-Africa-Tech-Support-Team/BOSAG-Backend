@@ -30,7 +30,7 @@ onboardingRoutes.post(
   submitOnboardingForm
 );
 
-onboardingRoutes.put("/onboarding/update", protect, upload.fields([
+onboardingRoutes.put("/update", protect, upload.fields([
   { name: "registrationCertificate", maxCount: 1 },
   { name: "companyProfile", maxCount: 1 },
   { name: "logo", maxCount: 1 },
