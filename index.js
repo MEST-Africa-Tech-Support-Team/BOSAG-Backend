@@ -5,10 +5,10 @@ import morgan from "morgan";
 import passport from "passport"; 
 import session from "express-session"; 
 import "./Configs/passport.js"; 
-
 import connectDB from "./Configs/database.js";
 import userRoutes from "./Routes/user_route.js";
 import onboardingRoutes from "./Routes/membership_route.js";
+import eventRoutes from "./Routes/event_route.js";
 
 
 // APP INITIALIZATION
@@ -46,6 +46,9 @@ app.use("/api/users", userRoutes);
 
 // Membership onboarding routes
 app.use("/api/onboarding", onboardingRoutes);
+
+// Event management routes
+app.use("/api/events", eventRoutes);
 
 
 // ERROR HANDLING

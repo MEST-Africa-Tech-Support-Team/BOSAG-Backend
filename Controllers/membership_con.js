@@ -13,7 +13,6 @@ cloudinary.config({
 });
 
 // MULTER STORAGE CONFIG
-
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
@@ -68,9 +67,7 @@ export const submitOnboardingForm = async (req, res) => {
   }
 };
 
-// ==============================
-// 👤 GET USER’S OWN FORM
-// ==============================
+//  GET USER’S OWN FORM
 export const getMyOnboardingForm = async (req, res) => {
   try {
     const form = await OnboardingForm.findOne({ user: req.user._id });
