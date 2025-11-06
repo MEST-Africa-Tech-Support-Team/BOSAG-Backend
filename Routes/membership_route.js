@@ -5,7 +5,7 @@ import {
   getAllOnboardingForms,
   updateOnboardingStatus,
   updateMyOnboardingForm,
-  upload, // multer-cloudinary middleware
+  upload, 
 } from "../Controllers/membership_con.js";
 
 import { protect, adminOnly } from "../Middleware/auth_mid.js";

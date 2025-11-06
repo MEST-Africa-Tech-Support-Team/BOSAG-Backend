@@ -20,7 +20,7 @@ const eventSchema = new mongoose.Schema(
       required: [true, "Event location is required"],
     },
     image: {
-      type: String, // Cloudinary or external image URL
+      type: String, 
       required: [true, "Event image is required"],
     },
     category: {
