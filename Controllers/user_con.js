@@ -139,7 +139,7 @@ export const googleAuth = passport.authenticate("google", { scope: ["profile", "
 
 export const googleCallback = (req, res) => {
   const token = createToken(req.user);
-  res.redirect(`${process.env.FRONTEND_URL}/dashboard?token=${token}`);
+  res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}`);
 };
 
 // SOCIAL LOGIN (manual fallback)

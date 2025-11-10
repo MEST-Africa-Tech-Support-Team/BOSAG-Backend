@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  // Remove uid completely if not using Firebase
   firstName: { type: String, trim: true },
   lastName: { type: String, trim: true },
   email: { type: String, required: true, unique: true, lowercase: true },
