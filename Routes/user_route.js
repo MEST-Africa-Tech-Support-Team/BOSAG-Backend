@@ -9,8 +9,8 @@ import {
   socialLogin,
   createAdmin,
   updateProfile,
-  googleAuth,
   googleCallback,
+  googleAuth,
 } from "../Controllers/user_con.js";
 import { protect, adminOnly } from "../Middleware/auth_mid.js";
 
@@ -52,7 +52,7 @@ userRoutes.get("/auth/google", googleAuth);
 // Step 2: Handle callback after Google login success/failure
 userRoutes.get(
   "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  passport.authenticate("google", { failureRedirect: `${process.env.FRONTEND_URL}/login`}),
   googleCallback
 );
 
