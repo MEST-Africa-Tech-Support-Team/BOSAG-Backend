@@ -68,6 +68,7 @@ export const registerUser = async (req, res) => {
   }
 };
 
+// Verfy EMAIL
 export const verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;
@@ -110,6 +111,7 @@ export const verifyEmail = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Email verified successfully!",
+      verificationToken: token,
       user: {
         firstName: user.firstName,
         email: user.email,
