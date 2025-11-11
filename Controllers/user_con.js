@@ -68,21 +68,25 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// VERIFY EMAIL
 export const verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;
 
-    // Find user with a valid (non-expired) verification token
-    const user = await User.findOne({
-      verificationToken: token,
-      verificationTokenExpires: { $gt: Date.now() },
-    });
+    // Find user by token
+    const user = await User.findOne({ verificationToken: token });
 
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Invalid or expired verification link. Please request a new one.",
+        message: "Invalid verification link.",
+      });
+    }
+
+    // Check if token is expired
+    if (!user.verificationTokenExpires || user.verificationTokenExpires < Date.now()) {
+      return res.status(400).json({
+        success: false,
+        message: "Verification link has expired. Please request a new one.",
       });
     }
 
@@ -92,7 +96,7 @@ export const verifyEmail = async (req, res) => {
     user.verificationTokenExpires = undefined;
     await user.save();
 
-    // Send welcome email (optional)
+    // Optional: send welcome email
     try {
       await sendEmail(
         user.email,
@@ -100,10 +104,9 @@ export const verifyEmail = async (req, res) => {
         templates.welcome(user.firstName)
       );
     } catch (emailErr) {
-      console.error("⚠️ Welcome email failed:", emailErr.message);
+      console.error("⚠ Welcome email failed:", emailErr.message);
     }
 
-    // Respond in JSON so frontend handles the UI
     res.status(200).json({
       success: true,
       message: "Email verified successfully!",
