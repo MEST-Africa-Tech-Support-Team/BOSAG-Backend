@@ -56,7 +56,7 @@ export const registerUser = async (req, res) => {
       isVerified: false,
     });
 
-    const verificationLink = `${process.env.BACKEND_URL}/api/users/verify-email/${verificationToken}`;
+    const verificationLink = `${process.env.FRONTEND_URL}/api/users/verify-email/${verificationToken}`;
     await sendEmail(email, "Verify Your BOSAG Account", templates.verifyEmail(verificationLink));
 
     res.status(201).json({
