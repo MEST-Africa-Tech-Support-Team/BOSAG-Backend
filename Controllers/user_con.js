@@ -56,7 +56,7 @@ export const registerUser = async (req, res) => {
       isVerified: false,
     });
 
-    const verificationLink = `${process.env.FRONTEND_URL}/api/users/verify-email/${verificationToken}`;
+    const verificationLink = `${process.env.FRONTEND_URL}/verify/${verificationToken}`;
     await sendEmail(email, "Verify Your BOSAG Account", templates.verifyEmail(verificationLink));
 
     res.status(201).json({
@@ -73,40 +73,51 @@ export const verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;
 
+    // Find user with a valid (non-expired) verification token
     const user = await User.findOne({
       verificationToken: token,
       verificationTokenExpires: { $gt: Date.now() },
     });
 
-    if (!user)
-      return res.send(`
-        <h2>Invalid or expired verification link</h2>
-        <p>Please request a new verification email.</p>
-      `);
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired verification link. Please request a new one.",
+      });
+    }
 
+    // Mark as verified
     user.isVerified = true;
     user.verificationToken = undefined;
     user.verificationTokenExpires = undefined;
     await user.save();
 
+    // Send welcome email (optional)
     try {
-      await sendEmail(user.email, "Welcome to BOSAG!", templates.welcome(user.firstName));
+      await sendEmail(
+        user.email,
+        "Welcome to BOSAG!",
+        templates.welcome(user.firstName)
+      );
     } catch (emailErr) {
       console.error("⚠️ Welcome email failed:", emailErr.message);
     }
 
-    res.send(`
-      <div style="font-family: Arial, sans-serif; text-align:center; margin-top:50px;">
-        <h1 style="color:#0b58bc;">🎉 Account Verified!</h1>
-        <p>Hello ${user.firstName}, your account has been successfully verified.</p>
-        <a href="${process.env.FRONTEND_URL}/login" style="display:inline-block;background:#0b58bc;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;margin-top:20px;">
-          Go to Login
-        </a>
-      </div>
-    `);
+    // Respond in JSON so frontend handles the UI
+    res.status(200).json({
+      success: true,
+      message: "Email verified successfully!",
+      user: {
+        firstName: user.firstName,
+        email: user.email,
+      },
+    });
   } catch (err) {
     console.error("❌ Email Verification Error:", err);
-    res.status(500).send("<h2>Server Error</h2><p>Please try again later.</p>");
+    res.status(500).json({
+      success: false,
+      message: "Server error. Please try again later.",
+    });
   }
 };
 
