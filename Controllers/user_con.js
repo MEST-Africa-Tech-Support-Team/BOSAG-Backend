@@ -56,7 +56,7 @@ export const registerUser = async (req, res) => {
       isVerified: false,
     });
 
-    const verificationLink = `${process.env.FRONTEND_URL}/verify/${verificationToken}`;
+    const verificationLink = `${process.env.FRONTEND_URL}/login`;
     await sendEmail(email, "Verify Your BOSAG Account", templates.verifyEmail(verificationLink));
 
     res.status(201).json({
@@ -68,26 +68,21 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// Verfy EMAIL
+// VERIFY EMAIL
 export const verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;
 
-    // Find user by token
-    const user = await User.findOne({ verificationToken: token });
+    // Find user with a valid (non-expired) verification token
+    const user = await User.findOne({
+      verificationToken: token,
+      verificationTokenExpires: { $gt: Date.now() },
+    });
 
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Invalid verification link.",
-      });
-    }
-
-    // Check if token is expired
-    if (!user.verificationTokenExpires || user.verificationTokenExpires < Date.now()) {
-      return res.status(400).json({
-        success: false,
-        message: "Verification link has expired. Please request a new one.",
+        message: "Invalid or expired verification link. Please request a new one.",
       });
     }
 
@@ -97,7 +92,7 @@ export const verifyEmail = async (req, res) => {
     user.verificationTokenExpires = undefined;
     await user.save();
 
-    // Optional: send welcome email
+    // Send welcome email (optional)
     try {
       await sendEmail(
         user.email,
@@ -105,9 +100,10 @@ export const verifyEmail = async (req, res) => {
         templates.welcome(user.firstName)
       );
     } catch (emailErr) {
-      console.error("⚠ Welcome email failed:", emailErr.message);
+      console.error("⚠️ Welcome email failed:", emailErr.message);
     }
 
+    // Respond in JSON so frontend handles the UI
     res.status(200).json({
       success: true,
       message: "Email verified successfully!",
