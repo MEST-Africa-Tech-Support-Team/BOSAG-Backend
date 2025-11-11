@@ -33,24 +33,24 @@ otherOrganizationType: {
     employeesGlobal: { type: Number },
 
     // ORGANIZATION AND CONTACT INFORMATION
-    primaryContactName: { type: String, required: true, trim: true },
+    headOfOrganizatioName: { type: String, required: true, trim: true },
     jobTitle: { type: String, trim: true },
     email: { type: String, required: true, lowercase: true, trim: true },
     phone: { type: String, trim: true },
-    website: { type: String, trim: true },
-    PostalAddress: { type: String, trim: true },
-    CompanyEmail: { type: String, required: true, lowercase: true, trim: true },
-    CompanyPhone: { type: String, trim: true },
+    companyWebsite: { type: String, trim: true },
+    companyAddress: { type: String, trim: true },
+    contactEmail: { type: String, required: true, lowercase: true, trim: true },
+    contactPhone: { type: String, trim: true },
 
     // GOVERNANCE AND REPRESENTATION
-    nominatedRepresentative: { type: String, trim: true },
-    position: { type: String, trim: true },
-    NomPhone: { type: String, trim: true },
-    NomEmail: { type: String, lowercase: true, trim: true },
-    alternateRepresentative: { type: String, trim: true },
-    altPosition: { type: String, trim: true },
-    AltPhone: { type: String, trim: true },
-    AltEmail: { type: String, lowercase: true, trim: true },
+    nominatedRep: { type: String, trim: true },
+    nomPositionRole: { type: String, trim: true },
+    nomPhoneNumber: { type: String, trim: true },
+    nomEmailAddress: { type: String, lowercase: true, trim: true },
+    alternateRep: { type: String, trim: true },
+    altPositionRole: { type: String, trim: true },
+    altPhoneNumber: { type: String, trim: true },
+    altEmailAddress: { type: String, lowercase: true, trim: true },
     
     // COMMITMENT & DECLARATIONS
     agreesConstitution: { type: Boolean, default: false },
@@ -65,14 +65,9 @@ otherOrganizationType: {
     logo: { type: String }, 
     brochure: { type: String },  
 
-    // AUTHORIZED SIGNATORY DETAILS
-    authorizedSignatory: { type: String, trim: true },
+  
 
-    // F. SIGNATURE & CONFIRMATION
-    representativeName: { type: String, trim: true },
-    dateSigned: { type: Date },
-
-    AcceptedTerms: { type: Boolean, default: false },
+    acknowledged: { type: Boolean, default: false },
 
     // ADMIN USE
     status: {
