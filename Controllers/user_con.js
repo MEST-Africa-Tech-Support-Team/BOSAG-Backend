@@ -29,11 +29,12 @@ const createToken = (user) => {
   );
 };
 
-// REGISTER USER
+// REGISTER USER (Auto-verified version)
 export const registerUser = async (req, res) => {
   try {
     const { error } = registerSchema.validate(req.body);
-    if (error) return res.status(400).json({ message: error.details[0].message });
+    if (error)
+      return res.status(400).json({ message: error.details[0].message });
 
     const { firstName, lastName, email, password, provider } = req.body;
 
@@ -42,25 +43,28 @@ export const registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const verificationToken = crypto.randomBytes(32).toString("hex");
-    const verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h
-
+    // ✅ Automatically verified
     user = await User.create({
       firstName,
       lastName,
       email,
       password: hashedPassword,
       provider,
-      verificationToken,
-      verificationTokenExpires,
-      isVerified: false,
+      isVerified: true, // <-- already verified
     });
 
-    const verificationLink = `${process.env.FRONTEND_URL}/login`;
-    await sendEmail(email, "Verify Your BOSAG Account", templates.verifyEmail(verificationLink));
+    // Email link just leads to login page
+    const loginLink = `${process.env.FRONTEND_URL}/login`;
+
+    await sendEmail(
+      email,
+      "Welcome to BOSAG!",
+      templates.welcomeEmail(firstName, loginLink)
+    );
 
     res.status(201).json({
-      message: "User registered successfully. Please check your email to verify your account.",
+      message:
+        "✅ Account created successfully. Please check your email for confirmation.",
     });
   } catch (err) {
     console.error("❌ Registration Error:", err);
@@ -68,59 +72,6 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// VERIFY EMAIL
-export const verifyEmail = async (req, res) => {
-  try {
-    const { token } = req.params;
-
-    // Find user with a valid (non-expired) verification token
-    const user = await User.findOne({
-      verificationToken: token,
-      verificationTokenExpires: { $gt: Date.now() },
-    });
-
-    if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid or expired verification link. Please request a new one.",
-      });
-    }
-
-    // Mark as verified
-    user.isVerified = true;
-    user.verificationToken = undefined;
-    user.verificationTokenExpires = undefined;
-    await user.save();
-
-    // Send welcome email (optional)
-    try {
-      await sendEmail(
-        user.email,
-        "Welcome to BOSAG!",
-        templates.welcome(user.firstName)
-      );
-    } catch (emailErr) {
-      console.error("⚠️ Welcome email failed:", emailErr.message);
-    }
-
-    // Respond in JSON so frontend handles the UI
-    res.status(200).json({
-      success: true,
-      message: "Email verified successfully!",
-      verificationToken: token,
-      user: {
-        firstName: user.firstName,
-        email: user.email,
-      },
-    });
-  } catch (err) {
-    console.error("❌ Email Verification Error:", err);
-    res.status(500).json({
-      success: false,
-      message: "Server error. Please try again later.",
-    });
-  }
-};
 
 // LOGIN USER
 export const loginUser = async (req, res) => {

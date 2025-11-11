@@ -2,7 +2,6 @@ import express from "express";
 import passport from "passport";
 import {
   registerUser,
-  verifyEmail,
   loginUser,
   forgotPassword,
   resetPassword,
@@ -27,8 +26,7 @@ userRoutes.post("/register", (req, res, next) => {
 }, registerUser);
 
 
-// Verify email via link (public)
-userRoutes.get("/verify-email/:token", verifyEmail);
+
 
 // Login user (public)
 userRoutes.post("/login", loginUser);
