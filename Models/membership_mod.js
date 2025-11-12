@@ -33,7 +33,7 @@ otherOrganizationType: {
     employeesGlobal: { type: Number },
 
     // ORGANIZATION AND CONTACT INFORMATION
-    headOfOrganizatioName: { type: String, required: true, trim: true },
+    headOfOrganizationName: { type: String, required: true, trim: true },
     jobTitle: { type: String, trim: true },
     email: { type: String, required: true, lowercase: true, trim: true },
     phone: { type: String, trim: true },

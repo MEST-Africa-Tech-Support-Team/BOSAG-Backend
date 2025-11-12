@@ -67,18 +67,24 @@ export const submitOnboardingForm = async (req, res) => {
   }
 };
 
-//  GET USER’S OWN FORM
 export const getMyOnboardingForm = async (req, res) => {
   try {
     const form = await OnboardingForm.findOne({ user: req.user._id });
-    if (!form) return res.status(404).json({ message: "Form not found for this user" });
+    if (!form) {
+      return res.status(404).json({ message: "Form not found for this user" });
+    }
 
-    res.json({ form });
+    // ✅ Convert to plain JSON
+    const plainForm = form.toObject();
+
+    res.status(200).json(plainForm);
   } catch (err) {
     console.error("❌ Get Form Error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
 
 // ADMIN: GET ALL FORMS
 export const getAllOnboardingForms = async (req, res) => {
