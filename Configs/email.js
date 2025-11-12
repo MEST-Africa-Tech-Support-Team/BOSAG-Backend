@@ -44,11 +44,11 @@ const templates = {
 `,
 
 
-  resetPassword: (link) => `
+  resetPassword: (resetLink) => `
     <div style="font-family: Arial, sans-serif; color: #333;">
       <h2 style="color: #0b58bc;">Reset Your Password</h2>
       <p>Click below to set a new password:</p>
-      <a href="${link}" 
+      <a href="${resetLink}" 
          style="display:inline-block;background:#0b58bc;color:#fff;
                 padding:10px 20px;border-radius:6px;text-decoration:none;">
         Reset Password
