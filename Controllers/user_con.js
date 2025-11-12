@@ -43,7 +43,7 @@ export const registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ✅ Automatically verified
+    // Automatically verified
     user = await User.create({
       firstName,
       lastName,
@@ -241,3 +241,60 @@ export const createAdmin = async (req, res) => {
   }
 };
 
+// GET MY PROFILE
+export const getMyProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password"); // exclude password
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json({ message: "Profile retrieved successfully", user });
+  } catch (err) {
+    console.error("❌ Get Profile Error:", err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// ADMIN: GET ALL USERS
+export const getAllUsers = async (req, res) => {
+  try {
+    // Check if current user is admin
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+
+    const users = await User.find().select("-password").sort({ createdAt: -1 });
+    res.json({ message: "All users retrieved successfully", users });
+  } catch (err) {
+    console.error("❌ Get All Users Error:", err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// ADMIN: DELETE USER
+export const deleteUser = async (req, res) => {
+  try {
+    // Only admins can delete users
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Prevent deleting other admins if needed (optional safeguard)
+    if (user.role === "admin") {
+      return res.status(400).json({ message: "Admins cannot delete other admins" });
+    }
+
+    await user.deleteOne();
+
+    res.json({ message: `✅ User '${user.email}' deleted successfully.` });
+  } catch (err) {
+    console.error("❌ Delete User Error:", err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};

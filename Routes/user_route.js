@@ -10,14 +10,15 @@ import {
   updateProfile,
   googleCallback,
   googleAuth,
+  getMyProfile,
+  deleteUser,
+  getAllUsers,
 } from "../Controllers/user_con.js";
 import { protect, adminOnly } from "../Middleware/auth_mid.js";
 
 const userRoutes = express.Router();
 
-// ======================
 // USER AUTH ROUTES
-// ======================
 
 // Register new user (public)
 userRoutes.post("/register", (req, res, next) => {
@@ -25,11 +26,11 @@ userRoutes.post("/register", (req, res, next) => {
   next();
 }, registerUser);
 
-
-
-
 // Login user (public)
 userRoutes.post("/login", loginUser);
+
+// User get their own profile (private)
+userRoutes.get("/get-profile", protect, getMyProfile)
 
 // Forgot password (public)
 userRoutes.post("/forgot-password", forgotPassword);
@@ -40,28 +41,17 @@ userRoutes.put("/reset-password/:token", resetPassword);
 // Manual/Firebase social login (public)
 userRoutes.post("/social-login", socialLogin);
 
-// ======================
-// GOOGLE AUTH ROUTES
-// ======================
-
-// Step 1: Redirect user to Google for consent
-userRoutes.post("/auth/google", googleAuth);
-
-// Step 2: Handle callback after Google login success/failure
-userRoutes.get(
-  "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: `${process.env.FRONTEND_URL}/login`}),
-  googleCallback
-);
-
-// ======================
-// USER PROFILE ROUTES
-// ======================
+//  USER PROFILE ROUTES
 userRoutes.put("/user-profile", protect, updateProfile);
 
-// ======================
-// 👨‍💼 ADMIN ROUTES
-// ======================
+// ADMIN ROUTES
+// A dmin creation route
 userRoutes.post("/create-admin", createAdmin);
+
+// Admin delete user 
+userRoutes.delete("/delete-user/:id", protect, adminOnly, deleteUser);
+
+// Admin get all users
+userRoutes.get("/get-all", protect, adminOnly, getAllUsers);
 
 export default userRoutes;
