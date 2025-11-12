@@ -11,36 +11,18 @@ if (!process.env.SENDGRID_API_KEY) {
 // Email Templates
 const templates = {
   welcomeEmail: (name, loginLink) => `
-  <!DOCTYPE html>
-  <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Welcome to BOSAG</title>
-  </head>
-  <body style="font-family: Arial, sans-serif; color: #333; background-color: #f9f9f9; padding: 20px;">
-    <div style="max-width: 600px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px;">
-      <h2 style="color: #0b58bc;">Welcome to BOSAG, ${name}!</h2>
-      <p>Your account has been created successfully and is ready to use.</p>
-      <p>Click below to log in to your account:</p>
-      
-      <!-- ✅ This link WILL be clickable in all email clients -->
-      <p style="text-align: center; margin: 30px 0;">
-        <a href="${loginLink}" target="_blank"
-           style="display: inline-block; background-color: #0b58bc; color: #ffffff; 
-                  text-decoration: none; padding: 12px 24px; border-radius: 6px; 
-                  font-size: 16px; font-weight: bold;">
-          Login to BOSAG
-        </a>
-      </p>
-
-      <p>If the button above doesn’t work, copy and paste this link into your browser:</p>
-      <p><a href="${loginLink}" target="_blank" style="color: #0b58bc;">${loginLink}</a></p>
-
-      <hr />
-      <p style="font-size: 12px; color: #888;">BOSAG Team © ${new Date().getFullYear()}</p>
-    </div>
-  </body>
-  </html>
+  <div style="font-family: Arial, sans-serif; color: #333;">
+    <h2 style="color: #0b58bc;">Welcome to BOSAG, ${name}!</h2>
+    <p>Your account has been created successfully and is ready to use.</p>
+    <p>Click below to log in to your account:</p>
+    <a href="${loginLink}"
+       style="display:inline-block;background:#0b58bc;color:#fff;
+              padding:10px 20px;border-radius:6px;text-decoration:none;">
+      Login to BOSAG
+    </a>
+    <hr />
+    <p style="font-size: 12px; color: #888;">BOSAG Team © ${new Date().getFullYear()}</p>
+  </div>
 `,
 
 

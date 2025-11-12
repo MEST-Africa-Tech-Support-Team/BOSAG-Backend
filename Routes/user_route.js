@@ -35,7 +35,7 @@ userRoutes.post("/login", loginUser);
 userRoutes.post("/forgot-password", forgotPassword);
 
 // Reset password (public)
-userRoutes.post("/reset-password/:token", resetPassword);
+userRoutes.put("/reset-password/:token", resetPassword);
 
 // Manual/Firebase social login (public)
 userRoutes.post("/social-login", socialLogin);
