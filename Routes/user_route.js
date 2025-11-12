@@ -45,7 +45,7 @@ userRoutes.post("/social-login", socialLogin);
 // ======================
 
 // Step 1: Redirect user to Google for consent
-userRoutes.get("/auth/google", googleAuth);
+userRoutes.post("/auth/google", googleAuth);
 
 // Step 2: Handle callback after Google login success/failure
 userRoutes.get(
