@@ -232,11 +232,11 @@ export const createAdmin = async (req, res) => {
     });
 
     res.status(201).json({
-      message: "✅ Admin created successfully",
+      message: "Admin created successfully",
       admin: newAdmin,
     });
   } catch (err) {
-    console.error("❌ Create Admin Error:", err);
+    console.error("Create Admin Error:", err);
     res.status(500).json({ message: "Server Error" });
   }
 };
@@ -249,7 +249,31 @@ export const getMyProfile = async (req, res) => {
 
     res.json({ message: "Profile retrieved successfully", user });
   } catch (err) {
-    console.error("❌ Get Profile Error:", err);
+    console.error("Get Profile Error:", err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// USER: DELETE OWN ACCOUNT
+export const deleteMyAccount = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Optionally prevent deleting admin accounts through this route
+    if (user.role === "admin") {
+      return res.status(403).json({ message: "Admins cannot delete their own account via user route" });
+    }
+
+    await user.deleteOne();
+
+    res.json({ message: "Your account has been deleted successfully." });
+  } catch (err) {
+    console.error("Delete My Account Error:", err);
     res.status(500).json({ message: "Server Error" });
   }
 };
@@ -265,7 +289,7 @@ export const getAllUsers = async (req, res) => {
     const users = await User.find().select("-password").sort({ createdAt: -1 });
     res.json({ message: "All users retrieved successfully", users });
   } catch (err) {
-    console.error("❌ Get All Users Error:", err);
+    console.error("Get All Users Error:", err);
     res.status(500).json({ message: "Server Error" });
   }
 };
@@ -292,9 +316,9 @@ export const deleteUser = async (req, res) => {
 
     await user.deleteOne();
 
-    res.json({ message: `✅ User '${user.email}' deleted successfully.` });
+    res.json({ message: `User '${user.email}' deleted successfully.` });
   } catch (err) {
-    console.error("❌ Delete User Error:", err);
+    console.error("Delete User Error:", err);
     res.status(500).json({ message: "Server Error" });
   }
 };

@@ -8,8 +8,6 @@ import {
   socialLogin,
   createAdmin,
   updateProfile,
-  googleCallback,
-  googleAuth,
   getMyProfile,
   deleteUser,
   getAllUsers,
@@ -40,6 +38,9 @@ userRoutes.put("/reset-password/:token", resetPassword);
 
 // Manual/Firebase social login (public)
 userRoutes.post("/social-login", socialLogin);
+
+// User deletes account (private)
+userRoutes.delete("/delete-account", protect, deleteUser);
 
 //  USER PROFILE ROUTES
 userRoutes.put("/user-profile", protect, updateProfile);
