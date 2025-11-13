@@ -4,7 +4,7 @@ import crypto from "crypto";
 import User from "../Models/user_mod.js";
 import { sendEmail, templates } from "../Configs/email.js";
 import Joi from "joi";
-import passport from "passport";
+import { OAuth2Client } from "google-auth-library";
 
 // JOI VALIDATION
 const registerSchema = Joi.object({
@@ -97,13 +97,6 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// GOOGLE LOGIN (Passport)
-export const googleAuth = passport.authenticate("google", { scope: ["profile", "email"] });
-
-export const googleCallback = (req, res) => {
-  const token = createToken(req.user);
-  res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}`);
-};
 
 // SOCIAL LOGIN (manual fallback)
 export const socialLogin = async (req, res) => {
@@ -320,5 +313,62 @@ export const deleteUser = async (req, res) => {
   } catch (err) {
     console.error("Delete User Error:", err);
     res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// GOOGLE OAUTH LOGIN (Manual verification)
+export const googleOAuthLogin = async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (!token) {
+      return res.status(400).json({ message: "Google token is required" });
+    }
+
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+    // ✅ Verify token with Google
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { email, name, picture, sub: googleId } = payload;
+
+    // ✅ Check if user exists
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      // Split full name into first/last if possible
+      const [firstName, ...lastNameParts] = name.split(" ");
+      const lastName = lastNameParts.join(" ") || "";
+
+      user = await User.create({
+        firstName,
+        lastName,
+        email,
+        provider: "google",
+        googleId,
+        avatar: picture,
+        isVerified: true,
+      });
+    }
+
+    // ✅ Create your app’s own JWT
+    const appToken = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      success: true,
+      message: "Google login successful",
+      token: appToken,
+      user,
+    });
+  } catch (err) {
+    console.error("❌ Google OAuth Error:", err);
+    res.status(401).json({ message: "Invalid Google token" });
   }
 };

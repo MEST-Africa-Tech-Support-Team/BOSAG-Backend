@@ -11,6 +11,7 @@ import {
   getMyProfile,
   deleteUser,
   getAllUsers,
+  googleOAuthLogin,
 } from "../Controllers/user_con.js";
 import { protect, adminOnly } from "../Middleware/auth_mid.js";
 
@@ -54,5 +55,8 @@ userRoutes.delete("/delete-user/:id", protect, adminOnly, deleteUser);
 
 // Admin get all users
 userRoutes.get("/get-all", protect, adminOnly, getAllUsers);
+
+// GOOGLE OAUTH LOGIN ROUTE
+userRoutes.post("/auth/google", googleOAuthLogin);
 
 export default userRoutes;
