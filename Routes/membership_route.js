@@ -53,6 +53,9 @@ onboardingRoutes.get("/me", protect, getMyOnboardingForm);
  */
 onboardingRoutes.get("/all", protect, adminOnly, getAllOnboardingForms);
 
+// admin-only route
+onboardingRoutes.get("/onboarding/:id", protect, adminOnly, getMyOnboardingForm);
+
 /**
  * @route PATCH /api/onboarding/:id/status
  * @desc Admin: Approve or reject onboarding form

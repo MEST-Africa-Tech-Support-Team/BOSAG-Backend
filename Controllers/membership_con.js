@@ -66,7 +66,7 @@ export const submitOnboardingForm = async (req, res) => {
     res.status(500).json({ message: "Server error. Could not submit form." });
   }
 };
-
+// UsER: GET OWN FORM
 export const getMyOnboardingForm = async (req, res) => {
   try {
     const form = await OnboardingForm.findOne({ user: req.user._id });
@@ -97,6 +97,26 @@ export const getAllOnboardingForms = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+// ADMIN: GET SINGLE ONBOARDING FORM BY ID
+export const getOnboardingFormById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const form = await OnboardingForm.findById(id)
+      .populate("user", "firstName lastName email");
+
+    if (!form) {
+      return res.status(404).json({ message: "Form not found" });
+    }
+
+    res.status(200).json(form);
+  } catch (err) {
+    console.error("❌ Admin Get Single Form Error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 
 // ADMIN: UPDATE STATUS (Approve/Reject)
 export const updateOnboardingStatus = async (req, res) => {
