@@ -15,7 +15,7 @@ const onboardingFormSchema = new mongoose.Schema(
     registrationNumber: { type: String, trim: true },
     organizationType: {
   type: [String], // 
-  enum: ["BPO", "ITO", "Shared Services", "Training Provider", "Technology Vendor", "Other"],
+  enum: ["BPO", "ITO", "Shared Services", "Training Provider", "Technology Vendor", "Consultancy", "Public Sector", "Other"],
   required: true,
 },
 
