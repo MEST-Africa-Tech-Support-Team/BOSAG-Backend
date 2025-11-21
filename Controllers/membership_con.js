@@ -17,9 +17,11 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "bosag_onboarding_uploads",
-    allowed_formats: ["jpg", "png", "pdf"],
+    resource_type: "auto", 
+    allowed_formats: ["jpg", "png", "pdf", "jpeg"],
   },
 });
+
 
 export const upload = multer({ storage });
 
