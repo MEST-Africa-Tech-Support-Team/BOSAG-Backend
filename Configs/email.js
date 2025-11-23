@@ -10,10 +10,10 @@ if (!process.env.SENDGRID_API_KEY) {
 
 // Membership Pricing
 const membershipPricing = {
-  "Platinum Member": "GHS 15,000 / year",
-  "Gold Member": "GHS 10,000 / year",
-  "Vendors & Affiliate Member": "GHS 6,500 / year",
-  "Start-ups & Associate Member": "GHS 3,500 / year",
+  "Platinum Member": "USD 900.00 / year",
+  "Gold Member": "USD 600.00 / year",
+  "Vendors & Affiliate Member": "USD 300.00 / year",
+  "Start-ups & Associate Member": "USD 150.00 / year",
 };
 
 // Benefits per Tier
