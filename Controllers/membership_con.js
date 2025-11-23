@@ -50,13 +50,13 @@ export const submitOnboardingForm = async (req, res) => {
     const user = await User.findById(req.user._id);
     if (user) {
       const name = user.firstName || user.name || "Member";
-      await sendEmail(
-        user.email,
-        "BOSAG Onboarding Form Received",
-        templates?.onboardingConfirmation
-          ? templates.onboardingConfirmation(name)
-          : `<p>Hello ${name}, your onboarding form has been received. Thank you!</p>`
-      );
+      await sendEmail({
+  to: user.email,
+  subject: "BOSAG Onboarding Form Received",
+  html: templates?.onboardingConfirmation(name, newForm.membershipTier)
+});
+
+
     }
 
     res.status(201).json({
@@ -136,13 +136,15 @@ export const updateOnboardingStatus = async (req, res) => {
     const user = await User.findById(form.user);
     if (user) {
       const name = user.firstName || "Member";
-      await sendEmail(
-        user.email,
-        "BOSAG Membership Application Status Update",
-        templates?.onboardingStatusUpdate
-          ? templates.onboardingStatusUpdate(name, form.status, form.remarks)
-          : `<p>Hello ${name}, your application has been <strong>${form.status}</strong>.<br/>Remarks: ${form.remarks || "None"}</p>`
-      );
+    await sendEmail({
+  to: user.email,
+  subject: "BOSAG Membership Application Status Update",
+  html: templates?.onboardingStatusUpdate
+      ? templates.onboardingStatusUpdate(name, form.status, form.remarks, form.membershipTier)
+      : `<p>Hello ${name}, your application has been <strong>${form.status}</strong>.<br/>Remarks: ${form.remarks || "None"}</p>`
+});
+
+
     }
 
     res.json({ message: "✅ Form status updated and email sent", form });
@@ -178,8 +180,8 @@ export const updateMyOnboardingForm = async (req, res) => {
       await sendEmail(
         user.email,
         "BOSAG Onboarding Form Updated",
-        templates?.onboardingUpdateConfirmation
-          ? templates.onboardingUpdateConfirmation(name)
+        templates?.updateMyOnboardingForm 
+          ? templates.updateMyOnboardingForm (name)
           : `<p>Hello ${name}, your onboarding form has been updated successfully.</p>`
       );
     }

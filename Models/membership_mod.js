@@ -72,7 +72,7 @@ otherOrganizationType: {
     // ADMIN USE
     status: {
       type: String,
-      enum: ["Pending", "Approved", "Rejected"],
+      enum: ["Pending", "Approved", "Rejected", "Payment Pending"],
       default: "Pending",
     },
     remarks: { type: String, trim: true },
