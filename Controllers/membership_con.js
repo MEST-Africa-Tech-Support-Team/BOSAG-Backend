@@ -51,10 +51,10 @@ export const submitOnboardingForm = async (req, res) => {
     if (user) {
       const name = user.firstName || user.name || "Member";
       await sendEmail({
-  to: user.email,
-  subject: "BOSAG Onboarding Form Received",
-  html: templates?.onboardingConfirmation(name, newForm.membershipTier)
-});
+      to: user.email,
+      subject: "BOSAG Onboarding Form Received",
+      html: templates?.onboardingConfirmation(name, newForm.membershipTier)
+    });
 
 
     }
