@@ -5,7 +5,8 @@ import {
   getAllOnboardingForms,
   updateOnboardingStatus,
   updateMyOnboardingForm,
-  upload, 
+  upload,
+  deleteOnboardingForm, 
 } from "../Controllers/membership_con.js";
 
 import { protect, adminOnly } from "../Middleware/auth_mid.js";
@@ -62,5 +63,7 @@ onboardingRoutes.get("/onboarding/:id", protect, adminOnly, getMyOnboardingForm)
  * @access Admin only
  */
 onboardingRoutes.patch("/:id/status", protect, adminOnly, updateOnboardingStatus);
+
+onboardingRoutes.delete("/admin/:id", adminOnly, deleteOnboardingForm);
 
 export default onboardingRoutes;
