@@ -46,6 +46,14 @@ export const submitOnboardingForm = async (req, res) => {
 
     await newForm.save();
 
+    // ⭐ UPDATE USER STAGE
+    await User.findByIdAndUpdate(
+      req.user._id,
+      { stages: "Details Submitted" },
+      { new: true }
+    );
+
+
     // Send confirmation email
     const user = await User.findById(req.user._id);
     if (user) {
@@ -119,40 +127,70 @@ export const getOnboardingFormById = async (req, res) => {
   }
 };
 
-
 // ADMIN: UPDATE STATUS (Approve/Reject)
 export const updateOnboardingStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status, remarks } = req.body;
 
-    const form = await OnboardingForm.findById(id);
-    if (!form) return res.status(404).json({ message: "Form not found" });
+    // Validate status
+    const validStatuses = ["Pending", "Payment Pending", "Approved", "Rejected"];
+    if (status && !validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status value" });
+    }
 
+    // Find form
+    const form = await OnboardingForm.findById(id);
+    if (!form) {
+      return res.status(404).json({ message: "Form not found" });
+    }
+
+    // Update form fields
     form.status = status || form.status;
     form.remarks = remarks || form.remarks;
     await form.save();
 
+    // Fetch associated user (the applicant)
     const user = await User.findById(form.user);
     if (user) {
       const name = user.firstName || "Member";
-    await sendEmail({
-  to: user.email,
-  subject: "BOSAG Membership Application Status Update",
-  html: templates?.onboardingStatusUpdate
+
+      // Update user stage based on application status
+      if (status === "Payment Pending") {
+        user.stages = "Details Approved";
+      }
+
+      if (status === "Approved") {
+        user.stages = "Active Member";
+      }
+
+      if (status === "Rejected") {
+        user.stages = "Application Rejected";
+      }
+
+      await user.save();
+      
+      // Send status email
+      await sendEmail({
+      to: user.email,
+      subject: "BOSAG Membership Application Status Update",
+      html: templates?.onboardingStatusUpdate
       ? templates.onboardingStatusUpdate(name, form.status, form.remarks, form.membershipTier)
       : `<p>Hello ${name}, your application has been <strong>${form.status}</strong>.<br/>Remarks: ${form.remarks || "None"}</p>`
 });
-
-
     }
 
-    res.json({ message: "✅ Form status updated and email sent", form });
+    res.json({
+      message: "✅ Form status updated, stage updated, and email sent",
+      form
+    });
+
   } catch (err) {
     console.error("❌ Update Status Error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // USER: UPDATE OWN FORM
 
@@ -177,13 +215,14 @@ export const updateMyOnboardingForm = async (req, res) => {
     const user = await User.findById(req.user._id);
     if (user) {
       const name = user.firstName || "Member";
-      await sendEmail(
-        user.email,
-        "BOSAG Onboarding Form Updated",
-        templates?.updateMyOnboardingForm 
-          ? templates.updateMyOnboardingForm (name)
-          : `<p>Hello ${name}, your onboarding form has been updated successfully.</p>`
-      );
+      await sendEmail({
+  to: user.email,
+  subject: "BOSAG Onboarding Form Updated",
+  html: templates?.updateMyOnboardingForm
+    ? templates.updateMyOnboardingForm(name)
+    : `<p>Hello ${name}, your onboarding form has been updated successfully.</p>`
+});
+
     }
 
     res.json({
@@ -204,7 +243,7 @@ export const deleteOnboardingForm = async (req, res) => {
     const form = await OnboardingForm.findById(id);
     if (!form) return res.status(404).json({ message: "Form not found" });
 
-    //Remove only the form, not Cloudinary files
+    // ⛔ Remove only the form, not Cloudinary files
     await form.deleteOne();
 
     const user = await User.findById(form.user);
@@ -217,7 +256,7 @@ export const deleteOnboardingForm = async (req, res) => {
       });
     }
 
-    res.json({ message: "Form deleted successfully" });
+    res.json({ message: "Form deleted successfully " });
   } catch (err) {
     console.error("❌ Delete Form Error:", err);
     res.status(500).json({ message: "Server error. Could not delete form." });

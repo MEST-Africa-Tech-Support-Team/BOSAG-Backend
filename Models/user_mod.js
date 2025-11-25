@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date },
   role: { type: String, enum: ["member", "admin", "superadmin"], default: "member" },
+  stages: { type: String, enum: ["New Account", "Details Submitted", "Details Approved", "Active Member"], default: "New Account" },
   isVerified: { type: Boolean, default: false },
   isActive: { type: Boolean, default: true },
 }, { timestamps: true });

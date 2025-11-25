@@ -74,11 +74,12 @@ export const registerUser = async (req, res) => {
     // Email link just leads to login page
     const loginLink = `${process.env.FRONTEND_URL}/login`;
 
-    await sendEmail(
-      email,
-      "Welcome to BOSAG!",
-      templates.welcomeEmail(firstName, loginLink)
-    );
+    await sendEmail({
+  to: email,
+  subject: "Welcome to BOSAG!",
+  html: templates.welcomeEmail(firstName, loginLink),
+});
+
 
     res.status(201).json({
       message:

@@ -64,6 +64,6 @@ onboardingRoutes.get("/onboarding/:id", protect, adminOnly, getMyOnboardingForm)
  */
 onboardingRoutes.patch("/:id/status", protect, adminOnly, updateOnboardingStatus);
 
-onboardingRoutes.delete("/admin/:id", protect, deleteOnboardingForm);
+onboardingRoutes.delete("/admin/:id", protect, adminOnly, deleteOnboardingForm);
 
 export default onboardingRoutes;
