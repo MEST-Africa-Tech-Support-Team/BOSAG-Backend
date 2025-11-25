@@ -24,6 +24,20 @@ const loginSchema = Joi.object({
   password: Joi.string().required(),
 });
 
+const adminCreateSchema = Joi.object({
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+  confirmPassword: Joi.string()
+    .valid(Joi.ref("password"))
+    .required()
+    .messages({
+      "any.only": "Passwords do not match",
+    }),
+});
+
+
 // HELPER FUNCTIONS
 const createToken = (user) => {
   return jwt.sign(
@@ -207,10 +221,12 @@ export const updateProfile = async (req, res) => {
 // CREATE ADMIN (Superadmin only)
 export const createAdmin = async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    // Validate inputs with confirmPassword
+    const { error } = adminCreateSchema.validate(req.body);
+    if (error)
+      return res.status(400).json({ message: error.details[0].message });
 
-    if (!firstName || !lastName || !email || !password)
-      return res.status(400).json({ message: "All fields are required" });
+    const { firstName, lastName, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser)
@@ -237,6 +253,7 @@ export const createAdmin = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 // GET MY PROFILE
 export const getMyProfile = async (req, res) => {

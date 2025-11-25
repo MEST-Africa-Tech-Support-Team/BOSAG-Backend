@@ -201,41 +201,25 @@ export const deleteOnboardingForm = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Find the form
     const form = await OnboardingForm.findById(id);
     if (!form) return res.status(404).json({ message: "Form not found" });
 
-    // Delete uploaded files from Cloudinary if they exist
-    const cloudinaryFields = ["registrationCertificate", "companyProfile", "logo", "brochure"];
-    for (const field of cloudinaryFields) {
-      if (form[field]) {
-        // Extract public_id from Cloudinary URL
-        const publicIdMatch = form[field].match(/\/([^/]+)\.(jpg|png|jpeg|pdf)$/);
-        if (publicIdMatch && publicIdMatch[1]) {
-          const publicId = `bosag_onboarding_uploads/${publicIdMatch[1]}`;
-          await cloudinary.uploader.destroy(publicId, { resource_type: "auto" });
-        }
-      }
-    }
+    //Remove only the form, not Cloudinary files
+    await form.deleteOne();
 
-    // Remove the form from database
-    await form.remove();
-
-    // Optional: notify user via email
     const user = await User.findById(form.user);
     if (user) {
       const name = user.firstName || "Member";
       await sendEmail({
         to: user.email,
         subject: "BOSAG Onboarding Form Deleted",
-        html: `<p>Hello ${name}, your onboarding form has been deleted by the admin. If this was unexpected, please contact support at <strong>membership@bosag.org</strong>.</p>`
+        html: `<p>Hello ${name}, your onboarding form has been deleted by the admin.</p>`
       });
     }
 
-    res.json({ message: "Onboarding form deleted successfully." });
+    res.json({ message: "Form deleted successfully" });
   } catch (err) {
     console.error("❌ Delete Form Error:", err);
     res.status(500).json({ message: "Server error. Could not delete form." });
   }
 };
-
