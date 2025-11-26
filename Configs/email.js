@@ -149,7 +149,7 @@ export const templates = {
           <p style="font-size:14px; color:#333;">Here is a summary of your selected membership category:</p>
           ${templates.membershipTierDetails(membershipTier)}
           <h3 style="font-family:Arial, sans-serif; color:#0b58bc; margin:10px 0 5px 0;">To complete your onboarding, please make payment using the details below:</h3>
-          <p style="font-size:14px; color:#333;"><strong>BANK PAYMENT:</strong><br />Bank Name: Ecobank Ghana<br />Account Name: BUSINESS OUTSOURCING SERVICES ASSOCIATION, GHANA LBG<br />Account Number:1441005056695 <br />Account Currency:GHS<br />Branch: East Airport <br />Short Code: 130147<br />Swift Code:130147 <br />Bank Address:2 Morocco Lane, Off Independence Avenue, Ministerial Area, P. O. Box AN 16746, North Ridge, Accra - Ghana </p>
+          <p style="font-size:14px; color:#333;"><strong>BANK PAYMENT:</strong><br />Bank Name: Ecobank Ghana<br />Account Name: BUSINESS OUTSOURCING SERVICES ASSOCIATION, GHANA LBG<br />Account Number:1441005056695 <br />Account Currency:GHS<br />Branch: East Airport <br />Short Code: 130147<br />Swift Code:ECOCGHAC <br />Bank Address:2 Morocco Lane, Off Independence Avenue, Ministerial Area, P. O. Box AN 16746, North Ridge, Accra - Ghana </p>
           <p style="font-size:14px; color:#333;"><br />Once payment is made, kindly send proof of payment to <strong>membership@bosag.org </strong></p>
           <p style="font-size:14px; color:#333;">Welcome to BOSAG! We look forward to working with you to advance Ghana’s business services sector.</p>
           <p style="font-size:14px; color:#333;"><strong>Best regard<br /> <strong>Bosag Team<br />Email: membership@bosag.org <br /> </strong> </p>
