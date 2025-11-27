@@ -78,6 +78,7 @@ export const templates = {
     </tr>
   </table>
   `,
+  
 
   // Simple Welcome
   welcome: (name) => `

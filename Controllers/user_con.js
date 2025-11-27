@@ -156,7 +156,14 @@ export const forgotPassword = async (req, res) => {
     await user.save();
 
     const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-    await sendEmail(email, "Reset Your BOSAG Password", templates.resetPassword(resetLink));
+  await sendEmail({
+    to: user.email,
+    subject: "Reset Your Password",
+    html: templates.resetPassword(resetLink),
+  });
+
+
+    
 
     res.json({ message: "Password reset email sent successfully." });
   } catch (err) {
