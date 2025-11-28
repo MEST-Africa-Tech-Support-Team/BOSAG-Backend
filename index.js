@@ -4,6 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import passport from "passport"; 
 import session from "express-session"; 
+import MongoStore from 'connect-mongo';
 import "./Configs/passport.js"; 
 import connectDB from "./Configs/database.js";
 import userRoutes from "./Routes/user_route.js";
@@ -26,6 +27,16 @@ app.use(
     secret: process.env.SESSION_SECRET || "bosag_secret_key",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,   
+      collectionName: "sessions",
+      ttl: 14 * 24 * 60 * 60, 
+    }),
+    cookie: {
+      secure: false, 
+      httpOnly: true,
+      maxAge: 14 * 24 * 60 * 60 * 1000,
+    },
   })
 );
 app.use(passport.initialize());
