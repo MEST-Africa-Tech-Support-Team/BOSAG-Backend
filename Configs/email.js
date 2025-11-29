@@ -51,6 +51,11 @@ export const templates = {
   <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial, sans-serif; max-width:600px; margin:auto; border-collapse:collapse;">
     <tr>
       <td style="padding:20px; background-color:#f8fbff; border-radius:10px; text-align:center;">
+      <img 
+      src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
+      alt="BOSAG Logo"
+      style="width:160px; margin-bottom:15px;"
+    />
         <h2 style="color:#0b58bc; margin:0 0 15px 0;">Welcome to BOSAG, ${name}!</h2>
         <p style="font-size:14px; color:#333; margin:0 0 15px 0;">Your account has been created successfully and is ready to use.</p>
         <a href="${loginLink}" style="display:inline-block; background:#0b58bc; color:#fff; padding:12px 25px; border-radius:6px; text-decoration:none; margin-top:10px;">Login to BOSAG</a>
@@ -67,6 +72,11 @@ export const templates = {
   <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial, sans-serif; max-width:600px; margin:auto; border-collapse:collapse;">
     <tr>
       <td style="padding:20px; background-color:#f8fbff; border-radius:10px; text-align:center;">
+      <img 
+      src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
+      alt="BOSAG Logo"
+      style="width:160px; margin-bottom:15px;"
+    />
         <h2 style="color:#0b58bc; margin:0 0 15px 0;">Reset Your Password</h2>
         <p style="font-size:14px; color:#333; margin:0 0 15px 0;">Click the button below to set a new password:</p>
         <a href="${resetLink}" style="display:inline-block; background:#0b58bc; color:#fff; padding:12px 25px; border-radius:6px; text-decoration:none;">Reset Password</a>
@@ -78,13 +88,18 @@ export const templates = {
     </tr>
   </table>
   `,
-  
+
 
   // Simple Welcome
   welcome: (name) => `
   <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial, sans-serif; max-width:600px; margin:auto; border-collapse:collapse;">
     <tr>
       <td style="padding:20px; background-color:#f8fbff; border-radius:10px; text-align:center;">
+      <img 
+      src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
+      alt="BOSAG Logo"
+      style="width:160px; margin-bottom:15px;"
+    />
         <h2 style="color:#0b58bc; margin:0 0 15px 0;">Welcome to BOSAG, ${name}!</h2>
         <p style="font-size:14px; color:#333; margin:0;">We’re thrilled to have you on board 🎉</p>
       </td>
@@ -106,6 +121,11 @@ export const templates = {
     <table cellpadding="10" cellspacing="0" border="0" width="100%" style="border:1px solid #ddd; border-radius:10px; background:#ffffff; margin:10px 0; border-collapse:collapse;">
       <tr>
         <td style="padding:10px;">
+        <img 
+      src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
+      alt="BOSAG Logo"
+      style="width:160px; margin-bottom:15px;"
+    />
           <h3 style="color:#0b58bc; font-family:Arial, sans-serif; margin:0 0 10px 0;">${icon} ${membershipTier}</h3>
           <p style="margin:5px 0 15px 0; font-family:Arial, sans-serif; font-size:14px; color:#333;">${Description}</p>
           <p style="margin:5px 0; font-family:Arial, sans-serif; font-size:14px; color:#333;"><strong>Membership Fee:</strong> ${price}</p>
@@ -124,6 +144,11 @@ export const templates = {
 <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial, sans-serif; max-width:600px; margin:auto; border-collapse:collapse;">
   <tr>
     <td style="padding:20px; background-color:#f8fbff; border-radius:10px;">
+    <img 
+      src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
+      alt="BOSAG Logo"
+      style="width:160px; margin-bottom:15px;"
+    />
       <h2 style="color:#0b58bc; margin:0 0 10px 0;">Hello ${name},</h2>
       <p style="font-size:14px; color:#333;">Thank you for submitting your onboarding form to <strong>Business Outsourcing Services Association, Ghana (BOSAG).</strong>. We have received your membership application, and our team will review it and provide feedback within 48 hours.</p>
       ${membershipTier
@@ -142,6 +167,11 @@ export const templates = {
   <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial, sans-serif; max-width:600px; margin:auto; border-collapse:collapse;">
     <tr>
       <td style="padding:20px; background-color:#f8fbff; border-radius:10px;">
+      <img 
+      src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
+      alt="BOSAG Logo"
+      style="width:160px; margin-bottom:15px;"
+    />
         <h2 style="color:#0b58bc; margin:0 0 10px 0;">Hello ${name},</h2>
         <h3 style="color: ${status === "Approved" ? "green" : status === "Rejected" ? "red" : status === "Payment Pending" ? "orange" : "#555"}; margin:5px 0 10px 0;">${status}</h3>
         ${remarks ? `<p style="font-size:14px; color:#333;"><strong>Remarks:</strong> ${remarks}</p>` : ""}
