@@ -110,6 +110,58 @@ export const templates = {
   </table>
   `,
 
+    // Onboarding Form Deleted (Admin Action)
+  onboardingDeleted: (name) => `
+  <table cellpadding="0" cellspacing="0" border="0" width="100%" 
+    style="font-family:Arial, sans-serif; max-width:600px; margin:auto; border-collapse:collapse;">
+    
+    <tr>
+      <td style="padding:20px; background-color:#fff5f5; border-radius:10px;">
+
+        <img 
+          src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
+          alt="BOSAG Logo"
+          style="width:160px; margin-bottom:15px;"
+        />
+
+        <h2 style="color:#d9534f; margin:0 0 10px 0;">Application Removed</h2>
+
+        <p style="font-size:14px; color:#333;">
+          Hello ${name},<br><br>
+          This is to inform you that your onboarding form submitted to 
+          <strong>Business Outsourcing Services Association, Ghana (BOSAG)</strong>
+          has been <strong>deleted</strong> by the administrative team.
+        </p>
+
+        <p style="font-size:14px; color:#333;">
+          If this action was unexpected or if you believe this was done in error,
+          you may submit a new onboarding form using your BOSAG account.
+        </p>
+
+        <p style="font-size:14px; color:#333;">
+          Thank you for your understanding.
+        </p>
+
+        <br>
+
+        <p style="font-size:14px; color:#333;">
+          <strong>Best regards,<br>
+          BOSAG Membership Team<br>
+          Email: membership@bosag.org</strong>
+        </p>
+
+      </td>
+    </tr>
+
+    <tr>
+      <td style="text-align:center; font-size:12px; color:#888; padding:10px;">
+        BOSAG Team © ${new Date().getFullYear()}
+      </td>
+    </tr>
+  </table>
+  `,
+
+
   // Membership Tier Details
   membershipTierDetails: (membershipTier) => {
     const price = membershipPricing[membershipTier];

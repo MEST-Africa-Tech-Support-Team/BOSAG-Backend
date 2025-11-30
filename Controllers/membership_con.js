@@ -235,7 +235,7 @@ export const updateMyOnboardingForm = async (req, res) => {
   }
 };
 
-// ADMIN: DELETE ONBOARDING FORM
+/// ADMIN: DELETE ONBOARDING FORM
 export const deleteOnboardingForm = async (req, res) => {
   try {
     const { id } = req.params;
@@ -243,20 +243,31 @@ export const deleteOnboardingForm = async (req, res) => {
     const form = await OnboardingForm.findById(id);
     if (!form) return res.status(404).json({ message: "Form not found" });
 
-    // ⛔ Remove only the form, not Cloudinary files
+    // Delete the form
     await form.deleteOne();
 
+    // Fetch user
     const user = await User.findById(form.user);
+
     if (user) {
       const name = user.firstName || "Member";
+
+      // ⭐ RESET STAGE because form no longer exists
+      user.stages = "New Account";
+      await user.save();
+
+      // Send deletion email
       await sendEmail({
-        to: user.email,
-        subject: "BOSAG Onboarding Form Deleted",
-        html: `<p>Hello ${name}, your onboarding form has been deleted by the admin.</p>`
-      });
+      to: user.email,
+      subject: "Your BOSAG Onboarding Form Has Been Deleted",
+      html: templates.onboardingDeleted(name)
+    });
     }
 
-    res.json({ message: "Form deleted successfully " });
+    res.json({
+      message: "Form deleted successfully and user stage reset.",
+    });
+
   } catch (err) {
     console.error("❌ Delete Form Error:", err);
     res.status(500).json({ message: "Server error. Could not delete form." });
