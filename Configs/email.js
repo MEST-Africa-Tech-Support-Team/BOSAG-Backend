@@ -197,7 +197,8 @@ export const templates = {
       style="width:160px; height:100px; margin-bottom:15px;"
     />
       <h2 style="color:#0b58bc; margin:0 0 10px 0;">Hello ${name},</h2>
-      <p style="font-size:14px; color:#333;">Thank you for submitting your onboarding form to <strong>Business Outsourcing Services Association, Ghana (BOSAG).</strong>. We have received your membership application, and our team will review it and provide feedback within 48 hours.</p>
+      <p style="font-size:14px; color:#333;">Thank you for submitting your onboarding form to <strong>Business Outsourcing Services Association, Ghana (BOSAG).</strong>. 
+      We have received your membership application, and our team will review it and provide feedback within 48 hours.</p>
       ${membershipTier
          ? `<p style="font-size:14px; color:#333;">Your selected membership tier:</p>${templates.membershipTierDetails(membershipTier)}` : ""}
       <p style="font-size:14px; color:#333;">You’ll receive another email once your membership status is updated.</p>
@@ -223,22 +224,27 @@ export const templates = {
         <h3 style="color: ${status === "Approved" ? "green" : status === "Rejected" ? "red" : status === "Payment Pending" ? "orange" : "#555"}; margin:5px 0 10px 0;">${status}</h3>
         ${remarks ? `<p style="font-size:14px; color:#333;"><strong>Remarks:</strong> ${remarks}</p>` : ""}
         ${status === "Payment Pending" ? `
-          <p style="font-size:14px; color:#333;">Congratulations! Your membership application to ,<strong>Business Outsourcing Services Association, Ghana (BOSAG)</strong> has been <strong>approved</strong>.</p>
+          <p style="font-size:14px; color:#333;">Congratulations! Your membership application to ,<strong>Business Outsourcing Services Association, Ghana (BOSAG)</strong> 
+          has been <strong>approved</strong>.</p>
           <p style="font-size:14px; color:#333;">Here is a summary of your selected membership category:</p>
           ${templates.membershipTierDetails(membershipTier)}
           <h3 style="font-family:Arial, sans-serif; color:#0b58bc; margin:10px 0 5px 0;">To complete your onboarding, please make payment using the details below:</h3>
-          <p style="font-size:14px; color:#333;"><strong>BANK PAYMENT:</strong><br />Bank Name: Ecobank Ghana<br />Account Name: BUSINESS OUTSOURCING SERVICES ASSOCIATION, GHANA LBG<br />Account Number:1441005056695 <br />Account Currency:GHS<br />Branch: East Airport <br />Short Code: 130147<br />Swift Code:ECOCGHAC <br />Bank Address:2 Morocco Lane, Off Independence Avenue, Ministerial Area, P. O. Box AN 16746, North Ridge, Accra - Ghana </p>
+          <p style="font-size:14px; color:#333;"><strong>BANK PAYMENT:</strong><br />Bank Name: Ecobank Ghana<br />Account Name: BUSINESS OUTSOURCING SERVICES ASSOCIATION, GHANA LBG
+          <br />Account Number:1441005056695 <br />Account Currency:GHS<br />Branch: East Airport <br />Short Code: 130147<br />Swift Code:ECOCGHAC <br />
+          Bank Address:2 Morocco Lane, Off Independence Avenue, Ministerial Area, P. O. Box AN 16746, North Ridge, Accra - Ghana </p>
           <p style="font-size:14px; color:#333;"><br />Once payment is made, kindly send proof of payment to <strong>membership@bosag.org </strong></p>
           <p style="font-size:14px; color:#333;">Welcome to BOSAG! We look forward to working with you to advance Ghana’s business services sector.</p>
           <p style="font-size:14px; color:#333;"><strong>Best regard<br /> <strong>Bosag Team<br />Email: membership@bosag.org <br /> </strong> </p>
 
         ` : ""}
         ${status === "Approved" ? `
-          <p style="font-size:14px; color:#333;">We are pleased to confirm that we have received your payment for your BOSAG membership subscription. Your membership is now approved and active for the current calendar year, running from January to December 2026. </p>
+          <p style="font-size:14px; color:#333;">We are pleased to confirm that we have received your payment for your BOSAG membership subscription. 
+          Your membership is now approved and active for the current calendar year, running from January to December 2026. </p>
           <p style="font-size:14px; color:#333;">Here is a summary of your selected membership category:</p>
           ${templates.membershipTierDetails(membershipTier)}
           <p style="font-size:14px; color:#333;">We are excited to have you as part of the <strong>Business Outsourcing Services Association, Ghana (BOSAG)</strong> community.</p>
-          <h3 style="font-family:Arial, sans-serif; color:#0b58bc; margin:10px 0 5px 0;"><h3 style="font-family:Arial, sans-serif; color:#0b58bc; margin:10px 0 5px 0;">For any further inquiries or information, please contact:</h3>
+          <h3 style="font-family:Arial, sans-serif; color:#0b58bc; margin:10px 0 5px 0;"><h3 style="font-family:Arial, sans-serif; color:#0b58bc; margin:10px 0 5px 0;">
+          For any further inquiries or information, please contact:</h3>
           <p style="font-size:14px; color:#333;"><strong>David Gowu</strong><br /> <strong>CEO BOSAG</strong><br />Email: david.gowu@bosag.org <br />Contact: +233 242773762 </p>
           <p style="font-size:14px; color:#333;">Thank you for joining BOSAG. We look forward to working with you to advance Ghana’s Business Services ecosystem!</p>
           <p style="font-size:14px; color:#333;"><strong>Best regard<br /> <strong>Bosag Team<br />Email: membership@bosag.org <br /> </strong> </p>
