@@ -5,13 +5,11 @@ import {
   loginUser,
   forgotPassword,
   resetPassword,
-  socialLogin,
   createAdmin,
   updateProfile,
   getMyProfile,
   deleteUser,
   getAllUsers,
-  googleOAuthLogin,
 } from "../Controllers/user_con.js";
 import { protect, adminOnly } from "../Middleware/auth_mid.js";
 
@@ -37,9 +35,6 @@ userRoutes.post("/forgot-password", forgotPassword);
 // Reset password (public)
 userRoutes.put("/reset-password/:token", resetPassword);
 
-// Manual/Firebase social login (public)
-userRoutes.post("/social-login", socialLogin);
-
 // User deletes account (private)
 userRoutes.delete("/delete-account", protect, deleteUser);
 
@@ -57,6 +52,30 @@ userRoutes.delete("/delete-user/:id", protect, adminOnly, deleteUser);
 userRoutes.get("/get-all", protect, adminOnly, getAllUsers);
 
 // GOOGLE OAUTH LOGIN ROUTE
-userRoutes.post("/auth/google", googleOAuthLogin);
+// Step 1: Redirect user to Google
+userRoutes.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+// Step 2: Google callback
+userRoutes.get(
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: "https://bosag.org/login" }),
+  (req, res) => {
+    const user = req.user;
+
+    // Create JWT to send to frontend
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    // Redirect to dashboard
+    res.redirect(`https://bosag.org/dashboard?token=${token}`);
+  }
+);
+
 
 export default userRoutes;
