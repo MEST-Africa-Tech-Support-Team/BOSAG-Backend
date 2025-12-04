@@ -62,7 +62,9 @@ userRoutes.get(
 // Step 2: Google callback
 userRoutes.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "https://bosag.org/login" }),
+  passport.authenticate("google", { failureRedirect: "https://bosag.org/login",
+    session: false
+   }),
   (req, res) => {
     const user = req.user;
 
