@@ -10,19 +10,28 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
-
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const email = profile.emails?.[0].value;
-        const name = profile.displayName;
+        const email = profile.emails?.[0]?.value;
+
+        if (!email) {
+          return done(new Error("Google account has no email attached"), null);
+        }
+
+        const firstName =
+          profile.name?.givenName || profile.displayName?.split(" ")[0];
+        const lastName =
+          profile.name?.familyName ||
+          profile.displayName?.split(" ")[1] ||
+          "";
 
         let user = await User.findOne({ email });
 
         if (!user) {
           user = await User.create({
-            firstName: name.split(" ")[0],
-            lastName: name.split(" ")[1] || "",
+            firstName,
+            lastName,
             email,
             provider: "google",
             isVerified: true,
