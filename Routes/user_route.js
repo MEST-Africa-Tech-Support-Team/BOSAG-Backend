@@ -56,7 +56,7 @@ userRoutes.get("/get-all", protect, adminOnly, getAllUsers);
 // Step 1: Redirect user to Google
 userRoutes.get(
   "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", { scope: ["profile", "email"], session: false })
 );
 
 // Step 2: Google callback
