@@ -33,7 +33,7 @@ app.use(
       ttl: 14 * 24 * 60 * 60, 
     }),
     cookie: {
-      secure: false, 
+      secure: process.env.NODE_ENV === "production", 
       httpOnly: true,
       maxAge: 14 * 24 * 60 * 60 * 1000,
     },
