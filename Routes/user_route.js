@@ -56,29 +56,60 @@ userRoutes.get("/get-all", protect, adminOnly, getAllUsers);
 // Step 1: Redirect user to Google
 userRoutes.get(
   "/google",
-  passport.authenticate("google", { scope: ["profile", "email"], session: false })
+  passport.authenticate("google", { 
+    scope: ["profile", "email"], 
+    session: false 
+  })
 );
 
-// Step 2: Google callback
+// Step 2: Google callback - FIXED VERSION
 userRoutes.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "https://bosag.org/login",
-    session: false
-   }),
-  (req, res) => {
-    const user = req.user;
+  (req, res, next) => {
+    passport.authenticate("google", { session: false }, (err, user, info) => {
+      if (err) {
+        console.error("Google Auth Error:", err);
+        return res.redirect("https://bosag.org/login?error=google_auth_failed");
+      }
+      
+      if (!user) {
+        console.error("No user returned from Google strategy");
+        return res.redirect("https://bosag.org/login?error=no_user");
+      }
 
-    // Create JWT to send to frontend
-    const token = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+      try {
+        // Create JWT to send to frontend
+        const token = jwt.sign(
+          { id: user._id, email: user.email },
+          process.env.JWT_SECRET,
+          { expiresIn: "7d" }
+        );
 
-    // Redirect to dashboard
-    res.redirect(`https://bosag.org/dashboard?token=${token}`);
+        res.redirect(`https://bosag.org/dashboard?token=${token}&user=${encodeURIComponent(JSON.stringify({
+          id: user._id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          role: user.role
+        }))}`);
+
+        // Method 2: Set token in cookie (if frontend can read it)
+        // res.cookie('auth_token', token, {
+        //   httpOnly: false, // frontend needs to read it
+        //   secure: process.env.NODE_ENV === 'production',
+        //   sameSite: 'lax',
+        //   maxAge: 7 * 24 * 60 * 60 * 1000
+        // });
+        // res.redirect('https://bosag.org/dashboard');
+
+      } catch (error) {
+        console.error("JWT creation error:", error);
+        res.redirect("https://bosag.org/login?error=token_creation_failed");
+      }
+    })(req, res, next);
   }
 );
+
 
 
 export default userRoutes;

@@ -4,7 +4,7 @@ import crypto from "crypto";
 import User from "../Models/user_mod.js";
 import { sendEmail, templates } from "../Configs/email.js";
 import Joi from "joi";
-import { OAuth2Client } from "google-auth-library";
+
 
 // JOI VALIDATION
 const registerSchema = Joi.object({

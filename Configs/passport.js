@@ -9,7 +9,7 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
-      userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+      userProfileURL:"https://www.googleapis.com/oauth2/v3/userinfo",
       passReqToCallback: false,
     },
     async (accessToken, refreshToken, profile, done) => {
@@ -21,32 +21,40 @@ passport.use(
         }
 
         const firstName =
-          profile.name?.givenName || profile.displayName?.split(" ")[0];
+          profile.name?.givenName || profile.displayName?.split(" ")[0] || "";
         const lastName =
           profile.name?.familyName ||
           profile.displayName?.split(" ")[1] ||
           "";
 
-        let user = await User.findOne({ email });
-
-        if (!user) {
-          user = await User.create({
+        //findOneAndUpdate with upsert to ensure user is created/updated
+        let user = await User.findOneAndUpdate(
+          { email },
+          {
             firstName,
             lastName,
             email,
             provider: "google",
             isVerified: true,
-          });
-        }
+            
+          },
+          { 
+            new: true, 
+            upsert: true, 
+            setDefaultsOnInsert: true,
+            runValidators: true 
+          }
+        );
 
         return done(null, user);
       } catch (error) {
+        console.error("Google OAuth Error:", error);
+        
         return done(error, null);
       }
-    }
+    } 
   )
 );
-
 
 export default passport;
 
