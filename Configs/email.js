@@ -190,6 +190,11 @@ export const templates = {
   onboardingConfirmation: (name, membershipTier) => `
 <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial, sans-serif; max-width:600px; margin:auto; border-collapse:collapse;">
   <tr>
+  <img 
+      src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
+      alt="BOSAG Logo"
+      style="width:100%; height:100px; margin-bottom:15px;"
+    />
     <td style="padding:20px; background-color:#f8fbff; border-radius:10px;">
    
       <h2 style="color:#0b58bc; margin:0 0 10px 0;">Hello ${name},</h2>
