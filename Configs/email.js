@@ -54,7 +54,7 @@ export const templates = {
       <img 
       src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
       alt="BOSAG Logo"
-      style="width:100%; height:100px; margin-bottom:15px;"
+      style="width:100%; height:120px; margin-bottom:15px;"
     />
         <h2 style="color:#0b58bc; margin:0 0 15px 0;">Welcome to BOSAG, ${name}!</h2>
         <p style="font-size:14px; color:#333; margin:0 0 15px 0;">Your account has been created successfully and is ready to use.</p>
@@ -75,7 +75,7 @@ export const templates = {
       <img 
       src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
       alt="BOSAG Logo"
-      style="width:160px; height:100px; margin-bottom:15px;"
+      style="width:100%; height:120px; margin-bottom:15px;"
     />
         <h2 style="color:#0b58bc; margin:0 0 15px 0;">Reset Your Password</h2>
         <p style="font-size:14px; color:#333; margin:0 0 15px 0;">Click the button below to set a new password:</p>
@@ -98,7 +98,7 @@ export const templates = {
       <img 
       src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
       alt="BOSAG Logo"
-      style="width:160px; height:100px; margin-bottom:15px;"
+      style="width:100%; height:120px; margin-bottom:15px;"
     />
         <h2 style="color:#0b58bc; margin:0 0 15px 0;">Welcome to BOSAG, ${name}!</h2>
         <p style="font-size:14px; color:#333; margin:0;">We’re thrilled to have you on board 🎉</p>
@@ -121,7 +121,7 @@ export const templates = {
         <img 
           src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
           alt="BOSAG Logo"
-          style="width:160px; height:100px; margin-bottom:15px;"
+          style="width:100%; height:120px; margin-bottom:15px;"
         />
 
         <h2 style="color:#d9534f; margin:0 0 10px 0;">Application Removed</h2>
@@ -195,7 +195,7 @@ export const templates = {
    <img 
       src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
       alt="BOSAG Logo"
-      style="width:100%; height:100px; margin-bottom:15px;"
+      style="width:100%; height:120px; margin-bottom:15px;"
     />
       <h2 style="color:#0b58bc; margin:0 0 10px 0;">Hello ${name},</h2>
       <p style="font-size:14px; color:#333;">Thank you for submitting your onboarding form to <strong>Business Outsourcing Services Association, Ghana (BOSAG).</strong>. 
@@ -219,7 +219,7 @@ export const templates = {
       <img 
       src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
       alt="BOSAG Logo"
-      style="width:160px; height:100px; margin-bottom:15px;"
+      style="width:100%; height:120px; margin-bottom:15px;"
     />
         <h2 style="color:#0b58bc; margin:0 0 10px 0;">Hello ${name},</h2>
         <h3 style="color: ${status === "Approved" ? "green" : status === "Rejected" ? "red" : status === "Payment Pending" ? "orange" : "#555"}; margin:5px 0 10px 0;">${status}</h3>
