@@ -54,11 +54,11 @@ export const templates = {
       <img 
       src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
       alt="BOSAG Logo"
-      style="width:160px; height:100px; margin-bottom:15px;"
+      style="width:100%; height:100px; margin-bottom:15px;"
     />
         <h2 style="color:#0b58bc; margin:0 0 15px 0;">Welcome to BOSAG, ${name}!</h2>
         <p style="font-size:14px; color:#333; margin:0 0 15px 0;">Your account has been created successfully and is ready to use.</p>
-        <a href="${loginLink}" style="display:inline-block; background:#0b58bc; color:#fff; padding:12px 25px; border-radius:6px; text-decoration:none; margin-top:10px;">Login to BOSAG</a>
+        <a href="${loginLink}" style="display:inline-block; background:#0b58bc; color:#fff; padding:12px 25px; border-radius:6px; text-decoration:none; margin-top:10px;">Verify your account</a>
       </td>
     </tr>
     <tr>
@@ -191,11 +191,7 @@ export const templates = {
 <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial, sans-serif; max-width:600px; margin:auto; border-collapse:collapse;">
   <tr>
     <td style="padding:20px; background-color:#f8fbff; border-radius:10px;">
-    <img 
-      src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
-      alt="BOSAG Logo"
-      style="width:160px; height:100px; margin-bottom:15px;"
-    />
+   
       <h2 style="color:#0b58bc; margin:0 0 10px 0;">Hello ${name},</h2>
       <p style="font-size:14px; color:#333;">Thank you for submitting your onboarding form to <strong>Business Outsourcing Services Association, Ghana (BOSAG).</strong>. 
       We have received your membership application, and our team will review it and provide feedback within 48 hours.</p>

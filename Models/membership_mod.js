@@ -43,31 +43,31 @@ otherOrganizationType: {
     contactPhone: { type: String, trim: true },
 
     // GOVERNANCE AND REPRESENTATION
-    nominatedRep: { type: String, trim: true },
+    nominatedRep: { type: String, required: true, trim: true },
     nomPositionRole: { type: String, trim: true },
-    nomPhoneNumber: { type: String, trim: true },
-    nomEmailAddress: { type: String, lowercase: true, trim: true },
+    nomPhoneNumber: { type: String, required: true, trim: true },
+    nomEmailAddress: { type: String, lowercase: true, required: true, trim: true },
     alternateRep: { type: String, trim: true },
     altPositionRole: { type: String, trim: true },
     altPhoneNumber: { type: String, trim: true },
     altEmailAddress: { type: String, lowercase: true, trim: true },
     
     // COMMITMENT & DECLARATIONS
-    agreesConstitution: { type: Boolean, default: false },
-    accurateInformation: { type: Boolean, default: false },
+    agreesConstitution: { type: Boolean, required: true, default: false },
+    accurateInformation: { type: Boolean, required: true, default: false },
     commitsParticipation: { type: Boolean, default: false },
-    BosagApproval: { type: Boolean, default: false },
-    agreesFeePayment: { type: Boolean, default: false },
+    BosagApproval: { type: Boolean, required: true, default: false },
+    agreesFeePayment: { type: Boolean, required: true, default: false },
 
     //  REQUIRED ATTACHMENTS (URLs from Cloudinary)
-    registrationCertificate: { type: String }, 
-    companyProfile: { type: String }, 
-    logo: { type: String }, 
+    registrationCertificate: { type: String, required: true }, 
+    companyProfile: { type: String, required: true }, 
+    logo: { type: String, required: true }, 
     brochure: { type: String },  
 
   
 
-    acknowledged: { type: Boolean, default: false },
+    acknowledged: { type: Boolean, required: true, default: false },
 
     // ADMIN USE
     status: {
