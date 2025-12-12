@@ -57,6 +57,7 @@ export const templates = {
       style="width:100%; height:12
       0px; margin-bottom:15px;"
     />
+    <hr style="border:none; border-top:1px solid #ddd; margin:10px 0;" />
         <h2 style="color:#0b58bc; margin:0 0 15px 0;">Welcome to BOSAG, ${name}!</h2>
         <p style="font-size:14px; color:#333; margin:0 0 15px 0;">Your account has been created successfully and is ready to use.</p>
         <a href="${loginLink}" style="display:inline-block; background:#0b58bc; color:#fff; padding:12px 25px; border-radius:6px; text-decoration:none; margin-top:10px;">Verify your account</a>
@@ -78,6 +79,7 @@ export const templates = {
       alt="BOSAG Logo"
       style="width:100%; height:120px; margin-bottom:15px;"
     />
+    <hr style="border:none; border-top:1px solid #ddd; margin:10px 0;" />
         <h2 style="color:#0b58bc; margin:0 0 15px 0;">Reset Your Password</h2>
         <p style="font-size:14px; color:#333; margin:0 0 15px 0;">Click the button below to set a new password:</p>
         <a href="${resetLink}" style="display:inline-block; background:#0b58bc; color:#fff; padding:12px 25px; border-radius:6px; text-decoration:none;">Reset Password</a>
@@ -101,6 +103,7 @@ export const templates = {
       alt="BOSAG Logo"
       style="width:100%; height:120px; margin-bottom:15px;"
     />
+    <hr style="border:none; border-top:1px solid #ddd; margin:10px 0;" />
         <h2 style="color:#0b58bc; margin:0 0 15px 0;">Welcome to BOSAG, ${name}!</h2>
         <p style="font-size:14px; color:#333; margin:0;">We’re thrilled to have you on board 🎉</p>
       </td>
@@ -124,7 +127,7 @@ export const templates = {
           alt="BOSAG Logo"
           style="width:100%; height:120px; margin-bottom:15px;"
         />
-
+        <hr style="border:none; border-top:1px solid #ddd; margin:10px 0;" />
         <h2 style="color:#d9534f; margin:0 0 10px 0;">Application Removed</h2>
 
         <p style="font-size:14px; color:#333;">
@@ -223,7 +226,7 @@ export const templates = {
       alt="BOSAG Logo"
       style="width:100%; height:120px; margin-bottom:15px;"
     />
-    hr style="border:none; border-top:1px solid #ddd; margin:10px 0;" />
+    <hr style="border:none; border-top:1px solid #ddd; margin:10px 0;" />
         <h2 style="color:#0b58bc; margin:0 0 10px 0;">Hello ${name},</h2>
         <h3 style="color: ${status === "Approved" ? "green" : status === "Rejected" ? "red" : status === "Payment Pending" ? "orange" : "#555"}; margin:5px 0 10px 0;">${status}</h3>
         ${remarks ? `<p style="font-size:14px; color:#333;"><strong>Remarks:</strong> ${remarks}</p>` : ""}
