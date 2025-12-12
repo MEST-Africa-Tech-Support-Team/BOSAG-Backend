@@ -51,7 +51,7 @@ export const createEvent = async (req, res) => {
     /* -------------------------------------------
         SEND NOTIFICATION TO APPROVED MEMBERS
     ------------------------------------------- */
-    const approvedMembers = await User.find({ status: "Approved" });
+    const approvedMembers = await User.find({ stages: "Active Member" });
 
     approvedMembers.forEach(async (member) => {
       await sendEmail({
