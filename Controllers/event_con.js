@@ -3,6 +3,7 @@ import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import Event from "../Models/event_mod.js";
 import { sendEmail, templates } from "../Configs/email.js";
+import User from "../Models/user_mod.js";
 
 /* -------------------------------
  CLOUDINARY CONFIG
