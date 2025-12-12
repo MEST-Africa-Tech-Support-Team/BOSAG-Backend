@@ -2,6 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import Event from "../Models/event_mod.js";
+import { sendEmail, templates } from "../Configs/email.js";
 
 /* -------------------------------
  CLOUDINARY CONFIG
@@ -47,8 +48,26 @@ export const createEvent = async (req, res) => {
       createdBy: req.user?._id,
     });
 
+    /* -------------------------------------------
+        SEND NOTIFICATION TO APPROVED MEMBERS
+    ------------------------------------------- */
+    const approvedMembers = await User.find({ status: "Approved" });
+
+    approvedMembers.forEach(async (member) => {
+      await sendEmail({
+        to: member.email,
+        subject: `New BOSAG Event: ${title}`,
+        html: templates.eventNotification(
+          member.firstName || "Member",
+          title,
+          date,
+          location
+        ),
+      });
+    });
+
     res.status(201).json({
-      message: "✅ Event created successfully",
+      message: "✅ Event created successfully and Notifications sent",
       event,
     });
   } catch (error) {

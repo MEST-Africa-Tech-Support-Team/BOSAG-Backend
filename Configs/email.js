@@ -54,7 +54,8 @@ export const templates = {
       <img 
       src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg" 
       alt="BOSAG Logo"
-      style="width:100%; height:120px; margin-bottom:15px;"
+      style="width:100%; height:12
+      0px; margin-bottom:15px;"
     />
         <h2 style="color:#0b58bc; margin:0 0 15px 0;">Welcome to BOSAG, ${name}!</h2>
         <p style="font-size:14px; color:#333; margin:0 0 15px 0;">Your account has been created successfully and is ready to use.</p>
@@ -259,6 +260,50 @@ export const templates = {
     </tr>
   </table>
   `,
+
+  eventNotification: (name, eventTitle, eventDate, eventLocation) => `
+<table cellpadding="0" cellspacing="0" width="100%" 
+style="font-family:Arial, sans-serif; max-width:600px; margin:auto;">
+  <tr>
+    <td style="padding:20px; background-color:#f8fbff; border-radius:10px;">
+      <img 
+        src="https://res.cloudinary.com/dr3h18rpt/image/upload/v1764336062/BOSAG-_White_Orange_JPG_hfcool.jpg"
+        alt="BOSAG Logo"
+        style="width:100%; height:130px; margin-bottom:15px;"
+      />
+
+      <h2 style="color:#0b58bc; margin:0 0 10px 0;">
+        New BOSAG Event: ${eventTitle}
+      </h2>
+
+      <p style="font-size:14px; color:#333;">
+        Hello ${name},<br><br>
+        A new event has been scheduled and you are invited to participate.
+      </p>
+
+      <p style="font-size:14px; color:#333;">
+        <strong>Date:</strong> ${new Date(eventDate).toDateString()}<br>
+        <strong>Location:</strong> ${eventLocation}
+      </p>
+
+      <p style="font-size:14px; color:#333;">
+        Kindly log in to your dashboard for more details.
+      </p>
+
+      <p style="font-size:14px; color:#333; margin-top:20px;">
+        Best regards,<br>
+        <strong>BOSAG Team</strong>
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center; font-size:12px; color:#888; padding:10px;">
+      BOSAG © ${new Date().getFullYear()}
+    </td>
+  </tr>
+</table>
+`,
+
 };
 
 // Optional helper to send emails

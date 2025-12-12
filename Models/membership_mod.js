@@ -42,6 +42,16 @@ otherOrganizationType: {
     contactEmail: { type: String, required: true, lowercase: true, trim: true },
     contactPhone: { type: String, trim: true },
 
+    socialMedia: {
+  linkedin:   { type: String, trim: true },
+  x:          { type: String, trim: true },
+  instagram:  { type: String, trim: true },
+  whatsapp:   { type: String, trim: true },
+  facebook:   { type: String, trim: true },
+  tiktok:     { type: String, trim: true },
+},
+
+
     // GOVERNANCE AND REPRESENTATION
     nominatedRep: { type: String, required: true, trim: true },
     nomPositionRole: { type: String, trim: true },
