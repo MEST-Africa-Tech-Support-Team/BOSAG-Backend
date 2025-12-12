@@ -294,6 +294,7 @@ style="font-family:Arial, sans-serif; max-width:600px; margin:auto;">
 
       <p style="font-size:14px; color:#333;">
         Kindly log in to your dashboard for more details.
+        <a href="${loginLink}" style="display:inline-block; background:#0b58bc; color:#fff; padding:12px 25px; border-radius:6px; text-decoration:none; margin-top:10px;">Login to Dashboard</a>
       </p>
 
       <p style="font-size:14px; color:#333; margin-top:20px;">
