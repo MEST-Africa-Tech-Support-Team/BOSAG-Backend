@@ -198,6 +198,7 @@ export const templates = {
       alt="BOSAG Logo"
       style="width:100%; height:120px; margin-bottom:15px;"
     />
+      <hr style="border:none; border-top:1px solid #ddd; margin:10px 0;" />
       <h2 style="color:#0b58bc; margin:0 0 10px 0;">Hello ${name},</h2>
       <p style="font-size:14px; color:#333;">Thank you for submitting your onboarding form to <strong>Business Outsourcing Services Association, Ghana (BOSAG).</strong>. 
       We have received your membership application, and our team will review it and provide feedback within 48 hours.</p>
@@ -222,6 +223,7 @@ export const templates = {
       alt="BOSAG Logo"
       style="width:100%; height:120px; margin-bottom:15px;"
     />
+    hr style="border:none; border-top:1px solid #ddd; margin:10px 0;" />
         <h2 style="color:#0b58bc; margin:0 0 10px 0;">Hello ${name},</h2>
         <h3 style="color: ${status === "Approved" ? "green" : status === "Rejected" ? "red" : status === "Payment Pending" ? "orange" : "#555"}; margin:5px 0 10px 0;">${status}</h3>
         ${remarks ? `<p style="font-size:14px; color:#333;"><strong>Remarks:</strong> ${remarks}</p>` : ""}
@@ -271,6 +273,7 @@ style="font-family:Arial, sans-serif; max-width:600px; margin:auto;">
         alt="BOSAG Logo"
         style="width:100%; height:130px; margin-bottom:15px;"
       />
+      <hr style="border:none; border-top:1px solid #ddd; margin:10px 0;" />
 
       <h2 style="color:#0b58bc; margin:0 0 10px 0;">
         New BOSAG Event: ${eventTitle}
